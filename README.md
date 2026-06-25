@@ -44,6 +44,7 @@ The presentation includes:
 
 - a 40-minute workshop flow
 - audience-facing explanations
+- dark speech-recognition pipeline simulator
 - no-API tap-through simulations
 - animated voice wave to transcript breakdown
 - one-on-one voice assistant conversation simulation
@@ -63,6 +64,7 @@ The presentation includes:
 | Opening | What speech recognition is and why it matters |
 | Voice-to-text | The basic meaning of speech recognition |
 | Pipeline | Sound waves, digital audio, spectrograms, and pattern matching |
+| Technical pipeline | Interactive dark pipeline showing speech, cleanup, features, model, context, and transcript |
 | No-API simulations | Tap-through voice wave and voice assistant conversation demos |
 | Interactive demo | Live microphone transcription and sample phrase fallback |
 | Human recognizer challenge | Why noisy speech creates different interpretations |
@@ -74,7 +76,17 @@ The presentation includes:
 
 ## Hands-On Activities
 
-### 1. Tap-Through Voice Wave Simulation
+### 1. Speech Recognition Pipeline Simulator
+
+Learners tap through a dark pipeline view that shows the main stages:
+
+```text
+incoming speech -> audio cleanup -> feature extraction -> acoustic model -> language context -> transcript
+```
+
+Each stage updates the visible output, keywords, confidence, and noise risk.
+
+### 2. Tap-Through Voice Wave Simulation
 
 Learners watch a spoken sentence move through five visible stages:
 
@@ -84,7 +96,7 @@ voice -> wave -> digital numbers -> sound patterns -> transcript
 
 This works without microphone access or external APIs.
 
-### 2. One-on-One Voice Assistant Simulation
+### 3. One-on-One Voice Assistant Simulation
 
 Learners tap through a simple conversation and see how a voice agent moves from listening to transcription, intent detection, details, and response.
 
@@ -94,7 +106,7 @@ Example request:
 Please book my haircut for Friday at 4 pm.
 ```
 
-### 3. Voice-to-Text Mini Demo
+### 4. Voice-to-Text Mini Demo
 
 Learners speak into the browser and watch speech become text.
 
@@ -104,7 +116,7 @@ Example sentence:
 ModSapp can reply to customers at eleven pm.
 ```
 
-### 4. Human Recognizer Challenge
+### 5. Human Recognizer Challenge
 
 Learners compare what people hear when a sentence is spoken clearly, quickly, quietly, or with background noise.
 
@@ -115,11 +127,11 @@ I scream for ice cream.
 recognize speech
 ```
 
-### 5. Word Error Rate Calculator
+### 6. Word Error Rate Calculator
 
 Learners compare a correct sentence with a machine transcript and see how substitutions, deletions, and insertions affect accuracy.
 
-### 6. Platform Lab
+### 7. Platform Lab
 
 Learners see how different tools handle different parts of voice AI:
 

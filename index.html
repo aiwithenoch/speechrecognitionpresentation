@@ -1252,6 +1252,202 @@
       height: 42px;
     }
 
+    .technical-pipeline {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.92fr) minmax(0, 1.08fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .pipeline-shell {
+      min-height: 540px;
+      padding: 22px;
+      border-radius: 20px;
+      border: 1px solid rgba(250, 250, 247, 0.18);
+      background: rgba(250, 250, 247, 0.05);
+      display: grid;
+      align-content: center;
+      overflow: hidden;
+    }
+
+    .pipe-flow {
+      display: grid;
+      gap: 0;
+      justify-items: center;
+    }
+
+    .pipe-node {
+      width: min(100%, 430px);
+      min-height: 64px;
+      border: 1px solid rgba(250, 250, 247, 0.54);
+      background: rgba(250, 250, 247, 0.07);
+      color: var(--primary-foreground);
+      padding: 14px 18px;
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 12px;
+      align-items: center;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .pipe-node:hover,
+    .pipe-node:focus-visible,
+    .pipe-node.is-active {
+      outline: none;
+      transform: translateY(-2px);
+      border-color: var(--gold);
+      background: rgba(212, 164, 55, 0.14);
+      box-shadow: 0 0 0 4px rgba(212, 164, 55, 0.08), 0 18px 40px -28px rgba(0, 0, 0, 0.75);
+    }
+
+    .pipe-index {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--gold);
+      color: var(--primary);
+      font-family: var(--mono);
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .pipe-node strong {
+      display: block;
+      font-size: 17px;
+      line-height: 1.18;
+    }
+
+    .pipe-node span:last-child {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pipe-connector {
+      width: 1px;
+      height: 32px;
+      background: rgba(250, 250, 247, 0.58);
+      position: relative;
+    }
+
+    .pipe-connector::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -1px;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 8px solid rgba(250, 250, 247, 0.78);
+    }
+
+    .pipe-panel {
+      min-height: 540px;
+      padding: 24px;
+      border-radius: 20px;
+      border: 1px solid rgba(250, 250, 247, 0.18);
+      background: rgba(250, 250, 247, 0.08);
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .pipe-output {
+      min-height: 112px;
+      border-radius: 18px 18px 18px 7px;
+      padding: 18px;
+      background: rgba(250, 250, 247, 0.1);
+      border: 1px solid rgba(250, 250, 247, 0.16);
+      display: grid;
+      align-content: center;
+      font-family: var(--display);
+      font-size: clamp(22px, 2.4vw, 34px);
+      font-weight: 900;
+      line-height: 1.14;
+    }
+
+    .pipe-panel .small {
+      color: rgba(250, 250, 247, 0.72);
+    }
+
+    .pipe-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      min-height: 38px;
+    }
+
+    .pipe-chips span {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(250, 250, 247, 0.1);
+      border: 1px solid rgba(250, 250, 247, 0.16);
+      color: var(--gold-2);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .pipe-meter {
+      display: grid;
+      gap: 10px;
+    }
+
+    .pipe-meter-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 44px;
+      gap: 10px;
+      align-items: center;
+      color: rgba(250, 250, 247, 0.8);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .pipe-meter-track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(250, 250, 247, 0.12);
+      overflow: hidden;
+    }
+
+    .pipe-meter-track span {
+      display: block;
+      width: var(--w);
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
+      transition: width 0.25s ease;
+    }
+
+    .pipe-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pipe-action {
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 14px;
+      background: var(--gold);
+      color: var(--primary);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .pipe-action.secondary {
+      background: rgba(250, 250, 247, 0.1);
+      color: var(--primary-foreground);
+      border: 1px solid rgba(250, 250, 247, 0.18);
+    }
+
     .simulation-board {
       display: grid;
       grid-template-columns: minmax(0, 1.04fr) minmax(340px, 0.72fr);
@@ -1748,6 +1944,7 @@
       .pipeline,
       .assistant-flow,
       .demo-lab,
+      .technical-pipeline,
       .simulation-board,
       .conversation-sim,
       .agenda-grid,
@@ -1759,12 +1956,18 @@
       }
 
       .sim-stage,
+      .pipeline-shell,
+      .pipe-panel,
       .conversation-engine {
         min-height: auto;
       }
 
       .sim-transform,
       .engine-state {
+        grid-template-columns: 1fr;
+      }
+
+      .pipe-meter-row {
         grid-template-columns: 1fr;
       }
 
@@ -1997,6 +2200,80 @@
           </div>
         </div>
         <div class="note">Important idea: the recognizer does not "know" with certainty. It ranks possibilities. "I scream" and "ice cream" can sound close, so context matters.</div>
+      </div>
+    </section>
+
+    <section class="slide dark" id="speech-pipeline-simulator" data-step="Pipeline">
+      <div class="content stack">
+        <div class="stack">
+          <span class="micro">How it works</span>
+          <h2>How It Works: The Speech Recognition Pipeline</h2>
+          <p class="lead">Modern systems can feel instant, but the job still breaks into clear stages: capture audio, clean it, find patterns, predict words, then use context to choose the best transcript.</p>
+        </div>
+        <div class="technical-pipeline" id="speechPipelineSim">
+          <div class="pipeline-shell">
+            <div class="pipe-flow" aria-label="Speech recognition pipeline">
+              <button class="pipe-node is-active" type="button" data-pipe-step="0">
+                <span class="pipe-index">1</span>
+                <span><strong>Incoming speech</strong></span>
+              </button>
+              <div class="pipe-connector" aria-hidden="true"></div>
+              <button class="pipe-node" type="button" data-pipe-step="1">
+                <span class="pipe-index">2</span>
+                <span><strong>Audio cleanup</strong></span>
+              </button>
+              <div class="pipe-connector" aria-hidden="true"></div>
+              <button class="pipe-node" type="button" data-pipe-step="2">
+                <span class="pipe-index">3</span>
+                <span><strong>Feature extractor</strong></span>
+              </button>
+              <div class="pipe-connector" aria-hidden="true"></div>
+              <button class="pipe-node" type="button" data-pipe-step="3">
+                <span class="pipe-index">4</span>
+                <span><strong>Acoustic model</strong></span>
+              </button>
+              <div class="pipe-connector" aria-hidden="true"></div>
+              <button class="pipe-node" type="button" data-pipe-step="4">
+                <span class="pipe-index">5</span>
+                <span><strong>Language + context</strong></span>
+              </button>
+              <div class="pipe-connector" aria-hidden="true"></div>
+              <button class="pipe-node" type="button" data-pipe-step="5">
+                <span class="pipe-index">6</span>
+                <span><strong>Final transcript</strong></span>
+              </button>
+            </div>
+          </div>
+          <div class="pipe-panel">
+            <div>
+              <h3 id="pipeTitle">Incoming speech</h3>
+              <p class="small" id="pipeDescription">The system starts with a raw voice signal. At this point it has sound, not meaning.</p>
+            </div>
+            <div class="pipe-output" id="pipeOutput">"Please send the class recording to my WhatsApp."</div>
+            <div>
+              <p class="small">Visible clues</p>
+              <div class="pipe-chips" id="pipeChips">
+                <span>voice wave</span><span>loudness</span><span>timing</span>
+              </div>
+            </div>
+            <div class="pipe-meter" id="pipeMeters">
+              <div class="pipe-meter-row">
+                <span>Confidence</span>
+                <div class="pipe-meter-track"><span style="--w:18%"></span></div>
+                <strong>18%</strong>
+              </div>
+              <div class="pipe-meter-row">
+                <span>Noise risk</span>
+                <div class="pipe-meter-track"><span style="--w:42%"></span></div>
+                <strong>42%</strong>
+              </div>
+            </div>
+            <div class="pipe-actions">
+              <button class="pipe-action" type="button" id="runSpeechPipeBtn">Run pipeline</button>
+              <button class="pipe-action secondary" type="button" id="resetSpeechPipeBtn">Reset</button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -2940,6 +3217,14 @@
     const werSummary = document.getElementById("werSummary");
     const werDetail = document.getElementById("werDetail");
     const werChips = document.getElementById("werChips");
+    const pipeNodes = Array.from(document.querySelectorAll("[data-pipe-step]"));
+    const runSpeechPipeBtn = document.getElementById("runSpeechPipeBtn");
+    const resetSpeechPipeBtn = document.getElementById("resetSpeechPipeBtn");
+    const pipeTitle = document.getElementById("pipeTitle");
+    const pipeDescription = document.getElementById("pipeDescription");
+    const pipeOutput = document.getElementById("pipeOutput");
+    const pipeChips = document.getElementById("pipeChips");
+    const pipeMeters = document.getElementById("pipeMeters");
     const waveSimulation = document.getElementById("waveSimulation");
     const runWaveSimBtn = document.getElementById("runWaveSimBtn");
     const waveScenarioButtons = Array.from(document.querySelectorAll("[data-wave-scenario]"));
@@ -2964,6 +3249,56 @@
     const conversationDetails = document.getElementById("conversationDetails");
     const conversationOutput = document.getElementById("conversationOutput");
     const SESSION_SECONDS = 40 * 60;
+    const speechPipeSteps = [
+      {
+        title: "Incoming speech",
+        description: "The system starts with a raw voice signal. At this point it has sound, not meaning.",
+        output: "\"Please send the class recording to my WhatsApp.\"",
+        chips: ["voice wave", "loudness", "timing"],
+        confidence: 18,
+        risk: 42,
+      },
+      {
+        title: "Audio cleanup",
+        description: "The system reduces noise, echo, and silence so the useful speech stands out.",
+        output: "Cleaner signal: speech parts become easier to separate from background sound.",
+        chips: ["noise reduction", "silence trim", "echo control"],
+        confidence: 31,
+        risk: 28,
+      },
+      {
+        title: "Feature extractor",
+        description: "The audio is sliced into tiny frames and turned into patterns the model can compare.",
+        output: "Frames + frequency patterns: /pl/ /eez/ /send/ /class/ ...",
+        chips: ["tiny frames", "frequency", "spectrogram"],
+        confidence: 49,
+        risk: 24,
+      },
+      {
+        title: "Acoustic model",
+        description: "A trained model predicts which sounds or word pieces are likely in the audio.",
+        output: "Likely pieces: please | send | class | recording | WhatsApp",
+        chips: ["phonemes", "word pieces", "probability"],
+        confidence: 68,
+        risk: 18,
+      },
+      {
+        title: "Language + context",
+        description: "Context helps the system choose between similar-sounding options.",
+        output: "\"class recording\" beats \"glass recording\" because the message context fits.",
+        chips: ["context", "grammar", "custom words"],
+        confidence: 84,
+        risk: 11,
+      },
+      {
+        title: "Final transcript",
+        description: "The best sentence is returned. A real product may now search, summarize, reply, or save an action.",
+        output: "Please send the class recording to my WhatsApp.",
+        chips: ["transcript", "next action", "correction"],
+        confidence: 94,
+        risk: 6,
+      },
+    ];
     const waveScenarios = {
       class: {
         phrase: "Please send the class recording to my WhatsApp.",
@@ -3054,6 +3389,7 @@
     let timerInterval = null;
     let recognition = null;
     let stageTimer = null;
+    let speechPipeTimer = null;
     let waveScenario = "class";
     let waveTimer = null;
     let conversationIndex = 0;
@@ -3143,6 +3479,51 @@
         window.clearInterval(stageTimer);
         setStage(stageItems.length - 1);
       }, 3600);
+    }
+
+    function renderSpeechPipeStep(index) {
+      const step = speechPipeSteps[index] || speechPipeSteps[0];
+      pipeNodes.forEach((node, nodeIndex) => {
+        node.classList.toggle("is-active", nodeIndex === index);
+      });
+      if (pipeTitle) pipeTitle.textContent = step.title;
+      if (pipeDescription) pipeDescription.textContent = step.description;
+      if (pipeOutput) pipeOutput.textContent = step.output;
+      if (pipeChips) {
+        pipeChips.innerHTML = "";
+        step.chips.forEach((chipText) => {
+          const chip = document.createElement("span");
+          chip.textContent = chipText;
+          pipeChips.appendChild(chip);
+        });
+      }
+      if (pipeMeters) {
+        pipeMeters.innerHTML = [
+          ["Confidence", step.confidence],
+          ["Noise risk", step.risk],
+        ].map(([label, value]) => `
+          <div class="pipe-meter-row">
+            <span>${label}</span>
+            <div class="pipe-meter-track"><span style="--w:${value}%"></span></div>
+            <strong>${value}%</strong>
+          </div>
+        `).join("");
+      }
+    }
+
+    function runSpeechPipeline() {
+      window.clearInterval(speechPipeTimer);
+      let index = 0;
+      renderSpeechPipeStep(index);
+      speechPipeTimer = window.setInterval(() => {
+        index += 1;
+        if (index >= speechPipeSteps.length) {
+          window.clearInterval(speechPipeTimer);
+          renderSpeechPipeStep(speechPipeSteps.length - 1);
+          return;
+        }
+        renderSpeechPipeStep(index);
+      }, 900);
     }
 
     function setWaveStep(index) {
@@ -3398,6 +3779,21 @@
     sampleButtons.forEach((button) => {
       button.addEventListener("click", () => runPipelineDemo(button.dataset.sample || "", "sample"));
     });
+    pipeNodes.forEach((node) => {
+      node.addEventListener("click", () => {
+        window.clearInterval(speechPipeTimer);
+        renderSpeechPipeStep(Number(node.dataset.pipeStep || 0));
+      });
+    });
+    if (runSpeechPipeBtn) {
+      runSpeechPipeBtn.addEventListener("click", runSpeechPipeline);
+    }
+    if (resetSpeechPipeBtn) {
+      resetSpeechPipeBtn.addEventListener("click", () => {
+        window.clearInterval(speechPipeTimer);
+        renderSpeechPipeStep(0);
+      });
+    }
     if (runWaveSimBtn) {
       runWaveSimBtn.addEventListener("click", runWaveSimulation);
     }
@@ -3437,6 +3833,7 @@
       }
     });
     setupSpeechRecognition();
+    renderSpeechPipeStep(0);
     setWaveScenario("class");
     renderConversation();
     updateWer();
