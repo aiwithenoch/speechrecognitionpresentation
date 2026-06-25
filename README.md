@@ -44,6 +44,9 @@ The presentation includes:
 
 - a 40-minute workshop flow
 - audience-facing explanations
+- no-API tap-through simulations
+- animated voice wave to transcript breakdown
+- one-on-one voice assistant conversation simulation
 - voice-to-text mini demo
 - sample phrase fallback for browsers without microphone access
 - human recognizer activity
@@ -60,6 +63,7 @@ The presentation includes:
 | Opening | What speech recognition is and why it matters |
 | Voice-to-text | The basic meaning of speech recognition |
 | Pipeline | Sound waves, digital audio, spectrograms, and pattern matching |
+| No-API simulations | Tap-through voice wave and voice assistant conversation demos |
 | Interactive demo | Live microphone transcription and sample phrase fallback |
 | Human recognizer challenge | Why noisy speech creates different interpretations |
 | Modern AI | How neural networks improved speech recognition |
@@ -70,7 +74,27 @@ The presentation includes:
 
 ## Hands-On Activities
 
-### 1. Voice-to-Text Mini Demo
+### 1. Tap-Through Voice Wave Simulation
+
+Learners watch a spoken sentence move through five visible stages:
+
+```text
+voice -> wave -> digital numbers -> sound patterns -> transcript
+```
+
+This works without microphone access or external APIs.
+
+### 2. One-on-One Voice Assistant Simulation
+
+Learners tap through a simple conversation and see how a voice agent moves from listening to transcription, intent detection, details, and response.
+
+Example request:
+
+```text
+Please book my haircut for Friday at 4 pm.
+```
+
+### 3. Voice-to-Text Mini Demo
 
 Learners speak into the browser and watch speech become text.
 
@@ -80,7 +104,7 @@ Example sentence:
 ModSapp can reply to customers at eleven pm.
 ```
 
-### 2. Human Recognizer Challenge
+### 4. Human Recognizer Challenge
 
 Learners compare what people hear when a sentence is spoken clearly, quickly, quietly, or with background noise.
 
@@ -91,11 +115,11 @@ I scream for ice cream.
 recognize speech
 ```
 
-### 3. Word Error Rate Calculator
+### 5. Word Error Rate Calculator
 
 Learners compare a correct sentence with a machine transcript and see how substitutions, deletions, and insertions affect accuracy.
 
-### 4. Platform Lab
+### 6. Platform Lab
 
 Learners see how different tools handle different parts of voice AI:
 
