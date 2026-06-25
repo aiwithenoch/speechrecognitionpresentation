@@ -1,0 +1,18 @@
+{
+  "name": "speechrecognitionpresentation",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Youth in AI Workshop speech recognition presentation.",
+  "license": "MIT",
+  "scripts": {
+    "start": "npx serve .",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "speech-recognition",
+    "ai-education",
+    "youth-in-ai",
+    "presentation",
+    "workshop"
+  ]
+}

@@ -1,0 +1,2689 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Youth in AI Workshop | Speech Recognition Presentation</title>
+  <meta name="description" content="A hands-on Youth in AI Workshop presentation explaining how speech recognition turns voice into text." />
+  <style>
+    :root {
+      --background: #fafaf7;
+      --foreground: #1c1e1d;
+      --primary: #0b3d2e;
+      --primary-soft: #154f3d;
+      --primary-foreground: #fafaf7;
+      --sage: #e8efea;
+      --sage-2: #d8e6de;
+      --gold: #d4a437;
+      --gold-2: #f4df9f;
+      --muted: #eef2ed;
+      --muted-foreground: #66736d;
+      --card: #ffffff;
+      --border: #dce6df;
+      --danger: #c0392b;
+      --success: #28a26b;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 18px 42px -26px rgba(11, 61, 46, 0.26);
+      --shadow-strong: 0 18px 80px -36px rgba(11, 61, 46, 0.45);
+      --radius: 18px;
+      --radius-bubble: 22px 22px 22px 8px;
+      --radius-bubble-r: 22px 22px 8px 22px;
+      --display: "Cabinet Grotesk", "Clash Display", "Aptos Display", "Segoe UI", system-ui, sans-serif;
+      --sans: "Inter", "Aptos", "Segoe UI", system-ui, sans-serif;
+      --mono: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--background);
+      color: var(--foreground);
+      font-family: var(--sans);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .deck {
+      height: 100vh;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(212, 164, 55, 0.13), transparent 28%),
+        linear-gradient(180deg, #fafaf7 0%, #f4f7f3 100%);
+    }
+
+    .slide {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: grid;
+      align-items: center;
+      padding: 38px clamp(20px, 4vw, 72px) 74px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide::after {
+      content: attr(data-step);
+      position: absolute;
+      right: clamp(20px, 4vw, 72px);
+      bottom: 28px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: rgba(28, 30, 29, 0.44);
+      letter-spacing: 0.02em;
+    }
+
+    .slide.dark {
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .slide.dark::after {
+      color: rgba(250, 250, 247, 0.48);
+    }
+
+    .slide.sage {
+      background: var(--sage);
+    }
+
+    .topbar {
+      position: fixed;
+      z-index: 20;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .brand,
+    .nav {
+      pointer-events: auto;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(250, 250, 247, 0.82);
+      border: 1px solid rgba(220, 230, 223, 0.9);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .mark {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px 10px 10px 4px;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      font-family: var(--display);
+      font-weight: 800;
+    }
+
+    .nav {
+      display: inline-flex;
+      gap: 6px;
+      padding: 6px;
+      background: rgba(250, 250, 247, 0.82);
+      border: 1px solid rgba(220, 230, 223, 0.9);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav button {
+      border: 0;
+      border-radius: 10px;
+      height: 34px;
+      min-width: 34px;
+      padding: 0 12px;
+      background: transparent;
+      color: var(--primary);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .timer {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px;
+      background: rgba(250, 250, 247, 0.82);
+      border: 1px solid rgba(220, 230, 223, 0.9);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .timer-time {
+      min-width: 62px;
+      padding: 0 8px;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--primary);
+      text-align: center;
+    }
+
+    .timer button {
+      border: 0;
+      border-radius: 10px;
+      height: 34px;
+      padding: 0 10px;
+      background: var(--sage);
+      color: var(--primary);
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .timer button:hover,
+    .timer button:focus-visible {
+      background: var(--primary);
+      color: var(--primary-foreground);
+      outline: none;
+    }
+
+    .nav button:hover,
+    .nav button:focus-visible {
+      background: var(--sage);
+      outline: none;
+    }
+
+    .progress {
+      position: fixed;
+      z-index: 21;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 4px;
+      background: rgba(11, 61, 46, 0.12);
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--gold));
+      transition: width 0.22s ease;
+    }
+
+    .content {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(330px, 0.9fr);
+      gap: clamp(28px, 5vw, 72px);
+      align-items: center;
+    }
+
+    .split.equal {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    h1,
+    h2,
+    h3,
+    .display {
+      font-family: var(--display);
+      letter-spacing: 0;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(54px, 8vw, 106px);
+      line-height: 0.94;
+      max-width: 940px;
+    }
+
+    h2 {
+      font-size: clamp(38px, 5.6vw, 74px);
+      line-height: 1;
+      max-width: 980px;
+    }
+
+    h3 {
+      font-size: clamp(22px, 2.7vw, 34px);
+      line-height: 1.08;
+    }
+
+    p {
+      margin: 0;
+      font-size: clamp(17px, 1.55vw, 22px);
+      line-height: 1.55;
+      color: var(--muted-foreground);
+    }
+
+    .dark p,
+    .dark .muted {
+      color: rgba(250, 250, 247, 0.76);
+    }
+
+    .lead {
+      font-size: clamp(21px, 2.1vw, 30px);
+      line-height: 1.35;
+      max-width: 800px;
+    }
+
+    .small {
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .micro {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .dark .micro {
+      color: var(--gold);
+    }
+
+    .gold {
+      color: var(--gold);
+    }
+
+    .primary {
+      color: var(--primary);
+    }
+
+    .muted {
+      color: var(--muted-foreground);
+    }
+
+    .card,
+    .bubble-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .card {
+      border-radius: var(--radius);
+    }
+
+    .bubble-card {
+      border-radius: 24px 24px 24px 10px;
+    }
+
+    .dark .card,
+    .dark .bubble-card {
+      background: rgba(250, 250, 247, 0.07);
+      border-color: rgba(250, 250, 247, 0.16);
+      color: var(--primary-foreground);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: max-content;
+      max-width: 100%;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--sage);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 800;
+      border: 1px solid rgba(11, 61, 46, 0.08);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    .hero-visual {
+      min-height: 500px;
+      padding: 26px;
+      display: grid;
+      align-content: center;
+      gap: 22px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(232, 239, 234, 0.75));
+    }
+
+    .phone-shell {
+      width: min(360px, 100%);
+      margin: 0 auto;
+      border: 10px solid var(--foreground);
+      border-radius: 42px;
+      background: var(--foreground);
+      box-shadow: var(--shadow-strong);
+      overflow: hidden;
+    }
+
+    .phone-screen {
+      border-radius: 30px;
+      overflow: hidden;
+      background: #ece5dd;
+    }
+
+    .phone-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 15px;
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(212, 164, 55, 0.28);
+      color: var(--gold-2);
+      font-family: var(--display);
+      font-weight: 800;
+    }
+
+    .chat-space {
+      min-height: 310px;
+      padding: 14px;
+      display: grid;
+      align-content: start;
+      gap: 10px;
+    }
+
+    .bubble {
+      max-width: 82%;
+      padding: 10px 13px;
+      font-size: 14px;
+      line-height: 1.42;
+      white-space: pre-wrap;
+      box-shadow: 0 8px 24px -18px rgba(0, 0, 0, 0.4);
+    }
+
+    .bubble.customer {
+      border-radius: var(--radius-bubble);
+      background: var(--sage);
+      justify-self: start;
+    }
+
+    .bubble.ai {
+      border-radius: var(--radius-bubble-r);
+      background: var(--primary);
+      color: var(--primary-foreground);
+      justify-self: end;
+    }
+
+    .bubble.system {
+      justify-self: center;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.86);
+      color: var(--muted-foreground);
+      font-size: 12px;
+      padding: 7px 11px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .wave {
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 20px;
+      background: var(--primary);
+      border-radius: 24px 24px 24px 10px;
+      overflow: hidden;
+    }
+
+    .wave span {
+      width: 8px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--gold), var(--sage));
+      opacity: 0.94;
+      animation: pulse 1.55s ease-in-out infinite;
+      animation-delay: calc(var(--i) * 0.07s);
+      height: calc(18px + var(--h) * 1px);
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scaleY(0.74);
+      }
+      50% {
+        transform: scaleY(1.1);
+      }
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .pipeline-card {
+      min-height: 180px;
+      padding: 18px;
+      border-radius: 20px 20px 20px 8px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.78);
+      display: grid;
+      align-content: space-between;
+      gap: 18px;
+    }
+
+    .pipeline-card strong {
+      font-family: var(--display);
+      font-size: 22px;
+      line-height: 1.05;
+    }
+
+    .agenda-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .agenda-item {
+      padding: 20px;
+      min-height: 190px;
+      display: grid;
+      align-content: space-between;
+      gap: 14px;
+    }
+
+    .agenda-time {
+      width: max-content;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .activity-steps {
+      counter-reset: activity;
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .activity-steps li {
+      counter-increment: activity;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 13px;
+      align-items: start;
+      padding: 15px;
+      border-radius: 18px;
+      background: white;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      font-size: clamp(16px, 1.35vw, 20px);
+      line-height: 1.42;
+    }
+
+    .activity-steps li::before {
+      content: counter(activity);
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px 14px 14px 6px;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      font-family: var(--mono);
+      font-weight: 900;
+    }
+
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .scenario-card {
+      padding: 20px;
+      min-height: 245px;
+      display: grid;
+      align-content: start;
+      gap: 12px;
+    }
+
+    .scenario-card h3 {
+      font-size: clamp(20px, 2vw, 28px);
+    }
+
+    .scenario-card .quote {
+      padding: 12px 13px;
+      border-radius: 16px 16px 16px 6px;
+      background: var(--sage);
+      color: var(--primary);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .demo-menu {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .demo-menu-item {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .demo-time {
+      width: 64px;
+      height: 64px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px 18px 18px 7px;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      font-family: var(--mono);
+      font-weight: 900;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .scenario-script {
+      display: grid;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .scenario-script div {
+      padding: 12px 13px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--border);
+      font-size: 15px;
+      line-height: 1.38;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .platform-card {
+      padding: 20px;
+      min-height: 250px;
+      display: grid;
+      align-content: start;
+      gap: 12px;
+    }
+
+    .platform-card h3 {
+      font-size: clamp(21px, 2vw, 30px);
+    }
+
+    .platform-label {
+      width: max-content;
+      max-width: 100%;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--sage);
+      color: var(--primary);
+      border: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .platform-link {
+      display: inline-flex;
+      width: max-content;
+      max-width: 100%;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 13px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 900;
+      box-shadow: var(--shadow);
+    }
+
+    .lab-board {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .lab-step {
+      padding: 20px;
+      min-height: 220px;
+      display: grid;
+      align-content: start;
+      gap: 12px;
+    }
+
+    .lab-step .num {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px 16px 16px 6px;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      font-family: var(--mono);
+      font-weight: 900;
+    }
+
+    .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px 14px 14px 6px;
+      display: grid;
+      place-items: center;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      font-family: var(--mono);
+      font-weight: 800;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .lesson-card {
+      min-height: 220px;
+      padding: 24px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .lesson-card .num {
+      font-family: var(--display);
+      font-size: 42px;
+      line-height: 1;
+      color: var(--gold);
+      font-weight: 900;
+    }
+
+    .diagram {
+      padding: 22px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .diagram-row {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .diagram-label {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    .sound-strip,
+    .bits,
+    .frames,
+    .words {
+      min-height: 54px;
+      border-radius: 16px;
+      background: var(--sage);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .sound-strip svg {
+      width: 100%;
+      height: 48px;
+      display: block;
+    }
+
+    .bits span {
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .frames span {
+      flex: 1;
+      min-width: 18px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, var(--gold), var(--sage-2));
+      border: 1px solid rgba(11, 61, 46, 0.08);
+    }
+
+    .words span {
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: white;
+      border: 1px solid var(--border);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .spectrogram {
+      height: 260px;
+      border-radius: 24px 24px 24px 10px;
+      padding: 16px;
+      background:
+        linear-gradient(90deg, rgba(11, 61, 46, 0.08) 1px, transparent 1px) 0 0 / 34px 100%,
+        linear-gradient(0deg, rgba(11, 61, 46, 0.08) 1px, transparent 1px) 0 0 / 100% 34px,
+        #10251f;
+      display: grid;
+      grid-template-columns: repeat(28, minmax(0, 1fr));
+      align-items: end;
+      gap: 5px;
+      overflow: hidden;
+      box-shadow: var(--shadow-strong);
+    }
+
+    .spectrogram span {
+      display: block;
+      border-radius: 9px 9px 0 0;
+      height: calc(24px + var(--h) * 1px);
+      background: linear-gradient(180deg, #f7df8a, #d4a437 45%, #4a8b6d 76%, rgba(232, 239, 234, 0.18));
+      opacity: var(--o);
+    }
+
+    .axis {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted-foreground);
+      margin-top: 10px;
+    }
+
+    .model-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .model-row {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      gap: 14px;
+      padding: 16px;
+      align-items: center;
+      border-radius: 18px;
+      background: white;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .model-row strong {
+      font-family: var(--display);
+      font-size: 23px;
+    }
+
+    .guess-board {
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+    }
+
+    .guess {
+      display: grid;
+      grid-template-columns: 1fr 72px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .meter {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(11, 61, 46, 0.1);
+      overflow: hidden;
+    }
+
+    .meter span {
+      display: block;
+      height: 100%;
+      width: var(--w);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--primary), var(--gold));
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .era {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 18px;
+      align-items: start;
+      padding: 18px;
+      border-radius: 20px 20px 20px 8px;
+      background: white;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .era .year {
+      font-family: var(--mono);
+      color: var(--gold);
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .callout {
+      padding: 20px;
+      border-radius: 22px 22px 22px 8px;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      box-shadow: var(--shadow);
+    }
+
+    .callout p {
+      color: rgba(250, 250, 247, 0.8);
+    }
+
+    .dark .callout {
+      background: rgba(250, 250, 247, 0.08);
+      border: 1px solid rgba(250, 250, 247, 0.18);
+    }
+
+    .assistant-flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .flow-step {
+      padding: 16px;
+      min-height: 170px;
+      border-radius: 20px 20px 20px 8px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--border);
+      display: grid;
+      align-content: start;
+      gap: 12px;
+      position: relative;
+    }
+
+    .flow-step::after {
+      content: "->";
+      position: absolute;
+      right: -16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      font-family: var(--mono);
+      font-weight: 900;
+    }
+
+    .flow-step:last-child::after {
+      display: none;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .score-card {
+      padding: 24px;
+      min-height: 240px;
+    }
+
+    .big-number {
+      font-family: var(--display);
+      font-size: clamp(58px, 7vw, 96px);
+      line-height: 0.9;
+      color: var(--gold);
+      font-weight: 900;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 12px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .checklist li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 12px;
+      align-items: start;
+      font-size: clamp(17px, 1.55vw, 22px);
+      line-height: 1.45;
+    }
+
+    .check {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px 9px 9px 4px;
+      background: var(--sage);
+      color: var(--primary);
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .dark .check {
+      background: rgba(212, 164, 55, 0.18);
+      color: var(--gold);
+    }
+
+    .sources {
+      columns: 2 360px;
+      column-gap: 34px;
+      margin-top: 24px;
+    }
+
+    .sources a {
+      display: block;
+      break-inside: avoid;
+      padding: 13px 0;
+      color: var(--primary);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .sources span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted-foreground);
+      font-weight: 500;
+    }
+
+    .note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: var(--sage);
+      border: 1px solid var(--border);
+      color: var(--muted-foreground);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .mini-bars {
+      display: grid;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .mini-bar {
+      display: grid;
+      grid-template-columns: 120px 1fr 52px;
+      gap: 10px;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .mini-bar .bar {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(11, 61, 46, 0.12);
+      overflow: hidden;
+    }
+
+    .mini-bar .bar span {
+      height: 100%;
+      display: block;
+      width: var(--w);
+      background: var(--primary);
+      border-radius: inherit;
+    }
+
+    .mini-bar.gold .bar span {
+      background: var(--gold);
+    }
+
+    .tag-cloud {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tag-cloud span {
+      padding: 10px 13px;
+      border-radius: 999px;
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .print-link {
+      display: inline-flex;
+      width: max-content;
+      padding: 11px 16px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 14px;
+      border: 0;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+    }
+
+    .demo-lab {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 0.85fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .demo-box {
+      padding: 22px;
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .demo-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .demo-button,
+    .sample-button {
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 14px;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    .sample-button {
+      background: var(--sage);
+      color: var(--primary);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .demo-button.secondary {
+      background: white;
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+
+    .demo-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    .demo-output {
+      min-height: 130px;
+      border-radius: 18px 18px 18px 7px;
+      border: 1px solid var(--border);
+      background: var(--sage);
+      padding: 18px;
+      font-size: clamp(22px, 2.4vw, 34px);
+      line-height: 1.25;
+      font-family: var(--display);
+      font-weight: 800;
+      display: grid;
+      align-content: center;
+    }
+
+    .demo-status {
+      min-height: 23px;
+      color: var(--muted-foreground);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .stage-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .stage-item {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 13px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--border);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .stage-item.is-active {
+      background: var(--primary);
+      color: var(--primary-foreground);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .stage-item.is-active p {
+      color: rgba(250, 250, 247, 0.76);
+    }
+
+    .stage-item .icon {
+      width: 42px;
+      height: 42px;
+    }
+
+    .wer-lab {
+      display: grid;
+      gap: 14px;
+    }
+
+    .wer-lab label {
+      display: grid;
+      gap: 7px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .wer-lab textarea {
+      min-height: 84px;
+      width: 100%;
+      resize: vertical;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: white;
+      padding: 13px 14px;
+      font: 600 16px/1.45 var(--sans);
+      color: var(--foreground);
+      outline: none;
+    }
+
+    .wer-lab textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(11, 61, 46, 0.12);
+    }
+
+    .wer-result {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 16px;
+      align-items: center;
+      padding: 18px;
+      border-radius: 20px 20px 20px 8px;
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .wer-result p {
+      color: rgba(250, 250, 247, 0.78);
+    }
+
+    .wer-score {
+      font-family: var(--display);
+      font-size: clamp(46px, 5vw, 76px);
+      font-weight: 900;
+      line-height: 0.9;
+      color: var(--gold);
+    }
+
+    .error-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 34px;
+    }
+
+    .error-chips span {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--sage);
+      border: 1px solid var(--border);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .caption {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted-foreground);
+    }
+
+    @media (max-width: 980px) {
+      body {
+        overflow: auto;
+      }
+
+      .deck {
+        height: auto;
+        scroll-snap-type: none;
+      }
+
+      .slide {
+        min-height: auto;
+        padding: 84px 20px 64px;
+      }
+
+      .split,
+      .split.equal,
+      .grid-3,
+      .grid-2,
+      .score-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pipeline,
+      .assistant-flow,
+      .demo-lab,
+      .agenda-grid,
+      .scenario-grid,
+      .demo-menu,
+      .platform-grid,
+      .lab-board {
+        grid-template-columns: 1fr;
+      }
+
+      .demo-menu-item {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-step::after {
+        display: none;
+      }
+
+      .diagram-row,
+      .model-row,
+      .era {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        left: 10px;
+        right: 10px;
+      }
+
+      .brand span:last-child {
+        display: none;
+      }
+
+      .nav button {
+        padding: 0 9px;
+      }
+
+      .timer {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 46px;
+      }
+
+      h2 {
+        font-size: 34px;
+      }
+
+      .hero-visual {
+        min-height: auto;
+        padding: 16px;
+      }
+
+      .phone-shell {
+        border-width: 7px;
+      }
+
+      .pipeline-card,
+      .lesson-card,
+      .score-card {
+        min-height: auto;
+      }
+
+      .sources {
+        columns: 1;
+      }
+    }
+
+    @media print {
+      body {
+        overflow: visible;
+        background: white;
+      }
+
+      .deck {
+        height: auto;
+        overflow: visible;
+        background: white;
+      }
+
+      .slide {
+        width: 100vw;
+        min-height: 100vh;
+        page-break-after: always;
+        break-after: page;
+      }
+
+      .topbar,
+      .progress {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <header class="topbar" aria-label="Presentation controls">
+    <div class="brand">
+      <span class="mark">M</span>
+    </div>
+    <div class="timer" aria-label="40 minute session timer">
+      <span class="timer-time" id="sessionTimer">40:00</span>
+      <button type="button" id="timerToggle">Start</button>
+      <button type="button" id="timerReset">Reset</button>
+    </div>
+    <nav class="nav">
+      <button type="button" id="prevBtn" aria-label="Previous slide">Prev</button>
+      <button type="button" id="nextBtn" aria-label="Next slide">Next</button>
+    </nav>
+  </header>
+
+  <main class="deck" id="deck">
+    <section class="slide" id="slide-1" data-step="01 / 17">
+      <div class="content split">
+        <div class="stack">
+          <span class="pill"><span class="dot"></span> Youth in AI Workshop</span>
+          <h1>How Speech Recognition Works</h1>
+          <p class="lead">A plain-English breakdown of how a phone, app, or smart speaker turns your voice into written words.</p>
+          <div class="tag-cloud" aria-label="Topics covered">
+            <span>Sound waves</span>
+            <span>Spectrograms</span>
+            <span>AI models</span>
+            <span>Accents</span>
+            <span>Voice assistants</span>
+          </div>
+        </div>
+        <div class="hero-visual bubble-card">
+          <div class="phone-shell" aria-label="Illustration of voice becoming text">
+            <div class="phone-screen">
+              <div class="phone-head">
+                <span class="avatar">A</span>
+                <div>
+                  <strong>Voice Assistant</strong>
+                  <div class="caption" style="color: rgba(250,250,247,.7)">listening...</div>
+                </div>
+              </div>
+              <div class="chat-space">
+                <div class="bubble customer">"Play my class recording"</div>
+                <div class="wave" aria-hidden="true">
+                  <span style="--i:1;--h:18"></span><span style="--i:2;--h:58"></span><span style="--i:3;--h:34"></span><span style="--i:4;--h:78"></span><span style="--i:5;--h:48"></span><span style="--i:6;--h:66"></span><span style="--i:7;--h:24"></span><span style="--i:8;--h:52"></span><span style="--i:9;--h:84"></span><span style="--i:10;--h:42"></span><span style="--i:11;--h:70"></span><span style="--i:12;--h:30"></span><span style="--i:13;--h:62"></span><span style="--i:14;--h:22"></span>
+                </div>
+                <div class="bubble system">Audio -> text</div>
+                <div class="bubble ai">Play my class recording</div>
+              </div>
+            </div>
+          </div>
+          <p class="caption center">The machine does not hear "meaning" first. It hears pressure changes, then searches for the most likely words.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide sage" id="slide-2" data-step="02 / 17">
+      <div class="content split equal">
+        <div class="stack">
+          <span class="micro">What is speech recognition?</span>
+          <h2>Speech recognition means voice-to-text.</h2>
+          <p class="lead">It is the AI process that listens to spoken language and writes down what it thinks was said.</p>
+        </div>
+        <div class="grid-2">
+          <div class="lesson-card bubble-card">
+            <div class="icon">STT</div>
+            <h3>Speech recognition</h3>
+            <p>Figures out the words: "send the invoice to Ama".</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="icon">ID</div>
+            <h3>Voice recognition</h3>
+            <p>Figures out who is speaking: Enoch, Ama, or someone else.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="forty-minute-plan" data-step="Plan">
+      <div class="content stack">
+        <div class="center stack" style="justify-items:center">
+          <span class="micro">Today's roadmap</span>
+          <h2>From spoken voice to useful action.</h2>
+          <p class="lead">In 40 minutes, we will move from familiar voice tools to the real pipeline behind speech recognition.</p>
+        </div>
+        <div class="agenda-grid">
+          <div class="agenda-item bubble-card">
+            <span class="agenda-time">0-5 min</span>
+            <div><h3>Everyday voice AI</h3><p>Voice typing, voice notes, search, smart speakers, captions, and assistants.</p></div>
+          </div>
+          <div class="agenda-item bubble-card">
+            <span class="agenda-time">5-14 min</span>
+            <div><h3>The pipeline</h3><p>Walk through sound waves, digital audio, spectrograms, and pattern matching.</p></div>
+          </div>
+          <div class="agenda-item bubble-card">
+            <span class="agenda-time">14-24 min</span>
+            <div><h3>Voice-to-text test</h3><p>A live pipeline view, followed by a human recognition challenge.</p></div>
+          </div>
+          <div class="agenda-item bubble-card">
+            <span class="agenda-time">24-34 min</span>
+            <div><h3>Modern AI + limits</h3><p>Explain neural models, messy real-world speech, bias, and accuracy.</p></div>
+          </div>
+          <div class="agenda-item bubble-card">
+            <span class="agenda-time">34-40 min</span>
+            <div><h3>Real-world choices</h3><p>Cloud vs on-device, improving accuracy, safety, and practical use cases.</p></div>
+          </div>
+        </div>
+        <div class="note">The path moves from simple intuition to live examples, then into accuracy, fairness, and real-world decisions.</div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-3" data-step="03 / 17">
+      <div class="content stack">
+        <div class="center stack" style="justify-items:center">
+          <span class="micro">The whole pipeline</span>
+          <h2>It is not magic. It is a chain of guesses.</h2>
+          <p class="lead">Each stage makes the next stage easier, until raw sound becomes a transcript.</p>
+        </div>
+        <div class="pipeline">
+          <div class="pipeline-card">
+            <div class="icon">01</div>
+            <strong>Capture the sound</strong>
+            <p class="small">A microphone records air vibrations.</p>
+          </div>
+          <div class="pipeline-card">
+            <div class="icon">02</div>
+            <strong>Turn it digital</strong>
+            <p class="small">The device converts the wave into numbers.</p>
+          </div>
+          <div class="pipeline-card">
+            <div class="icon">03</div>
+            <strong>Find patterns</strong>
+            <p class="small">The system looks at timing, pitch, rhythm, and frequency.</p>
+          </div>
+          <div class="pipeline-card">
+            <div class="icon">04</div>
+            <strong>Choose words</strong>
+            <p class="small">The model picks the most likely sentence.</p>
+          </div>
+        </div>
+        <div class="note">Important idea: the recognizer does not "know" with certainty. It ranks possibilities. "I scream" and "ice cream" can sound close, so context matters.</div>
+      </div>
+    </section>
+
+    <section class="slide sage" id="demo-lab" data-step="Demo">
+      <div class="content stack">
+        <div class="center stack" style="justify-items:center">
+          <span class="micro">Interactive demo</span>
+          <h2>Try the pipeline with a real or sample sentence.</h2>
+          <p class="lead">Use the microphone if Chrome allows it, or click a sample phrase. The point is to show that speech recognition is a step-by-step conversion, not one mysterious jump.</p>
+        </div>
+        <div class="demo-lab">
+          <div class="demo-box bubble-card">
+            <h3>Voice-to-text mini demo</h3>
+            <p class="small">Sample sentence: <strong>"ModSapp can reply to customers at eleven pm."</strong></p>
+            <div class="demo-controls">
+              <button class="demo-button" type="button" id="startMicBtn">Start microphone</button>
+              <button class="demo-button secondary" type="button" id="stopMicBtn" disabled>Stop</button>
+            </div>
+            <div class="demo-output" id="speechOutput">Transcript will appear here.</div>
+            <div class="demo-status" id="speechStatus">If the browser blocks the microphone, use a sample phrase below.</div>
+            <div class="demo-controls" aria-label="Sample phrase buttons">
+              <button class="sample-button" type="button" data-sample="ModSapp can reply to customers at eleven pm.">Business phrase</button>
+              <button class="sample-button" type="button" data-sample="Please send the class recording to my WhatsApp.">Class phrase</button>
+              <button class="sample-button" type="button" data-sample="I scream for ice cream.">Confusing phrase</button>
+            </div>
+          </div>
+          <div class="demo-box bubble-card">
+            <h3>What the machine is doing</h3>
+            <div class="stage-list" id="stageList">
+              <div class="stage-item is-active" data-stage="0">
+                <div class="icon">1</div>
+                <div><strong>Capture</strong><p class="small">Hear air vibrations through the microphone.</p></div>
+              </div>
+              <div class="stage-item" data-stage="1">
+                <div class="icon">2</div>
+                <div><strong>Convert</strong><p class="small">Turn the wave into digital numbers.</p></div>
+              </div>
+              <div class="stage-item" data-stage="2">
+                <div class="icon">3</div>
+                <div><strong>Pattern match</strong><p class="small">Compare sound patterns with learned examples.</p></div>
+              </div>
+              <div class="stage-item" data-stage="3">
+                <div class="icon">4</div>
+                <div><strong>Choose words</strong><p class="small">Pick the sentence that best fits the sound and context.</p></div>
+              </div>
+            </div>
+            <div class="note">Clear speech and noisy speech can produce different transcripts, even when the words are the same.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="human-recognizer-game" data-step="Activity">
+      <div class="content split">
+        <div class="stack">
+          <span class="micro">Audience activity</span>
+          <h2>The human recognizer challenge.</h2>
+          <p class="lead">This makes the core idea obvious: recognition is guessing from noisy evidence.</p>
+          <div class="callout">
+            <h3>Challenge phrase</h3>
+            <p>"I scream for ice cream" or "recognize speech" can sound like other phrases when spoken quickly.</p>
+          </div>
+        </div>
+        <ol class="activity-steps">
+          <li>One person says the phrase clearly. Everyone writes what they heard.</li>
+          <li>The same phrase is repeated faster, quieter, or with music/noise in the room.</li>
+          <li>Compare the different answers. Circle the words that changed.</li>
+          <li>Connect it back: ASR models do this at scale, using probabilities instead of human intuition.</li>
+          <li>Final question: what extra context would help the machine guess correctly?</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-4" data-step="04 / 17">
+      <div class="content split">
+        <div class="stack">
+          <span class="micro">Step 1</span>
+          <h2>Your voice starts as a moving wave.</h2>
+          <p class="lead">When you speak, your vocal cords and mouth create vibrations in the air. A microphone turns those tiny pressure changes into an electrical signal.</p>
+          <ul class="checklist">
+            <li><span class="check">1</span><span>Louder speech creates a taller wave.</span></li>
+            <li><span class="check">2</span><span>Higher pitch creates faster wiggles.</span></li>
+            <li><span class="check">3</span><span>Noise adds extra wiggles the machine must ignore.</span></li>
+          </ul>
+        </div>
+        <div class="bubble-card diagram">
+          <div class="wave" aria-hidden="true">
+            <span style="--i:1;--h:14"></span><span style="--i:2;--h:22"></span><span style="--i:3;--h:55"></span><span style="--i:4;--h:83"></span><span style="--i:5;--h:35"></span><span style="--i:6;--h:20"></span><span style="--i:7;--h:48"></span><span style="--i:8;--h:88"></span><span style="--i:9;--h:66"></span><span style="--i:10;--h:27"></span><span style="--i:11;--h:73"></span><span style="--i:12;--h:38"></span><span style="--i:13;--h:18"></span><span style="--i:14;--h:61"></span><span style="--i:15;--h:44"></span><span style="--i:16;--h:76"></span><span style="--i:17;--h:29"></span><span style="--i:18;--h:52"></span>
+          </div>
+          <p class="caption">A waveform is like the fingerprint of loudness over time. It is useful, but it does not clearly show what sounds are inside the voice.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide sage" id="slide-5" data-step="05 / 17">
+      <div class="content split equal">
+        <div class="bubble-card diagram">
+          <div class="diagram-row">
+            <div class="diagram-label">Air wave</div>
+            <div class="sound-strip">
+              <svg viewBox="0 0 720 80" role="img" aria-label="Sound wave">
+                <path d="M0,40 C24,8 48,72 72,40 C96,8 120,72 144,40 C168,8 192,72 216,40 C240,8 264,72 288,40 C312,8 336,72 360,40 C384,8 408,72 432,40 C456,8 480,72 504,40 C528,8 552,72 576,40 C600,8 624,72 648,40 C672,8 696,72 720,40" fill="none" stroke="#0b3d2e" stroke-width="7" stroke-linecap="round" />
+              </svg>
+            </div>
+          </div>
+          <div class="diagram-row">
+            <div class="diagram-label">Numbers</div>
+            <div class="bits">
+              <span>0101</span><span>1011</span><span>0010</span><span>1100</span><span>1001</span><span>0110</span>
+            </div>
+          </div>
+          <div class="diagram-row">
+            <div class="diagram-label">Tiny frames</div>
+            <div class="frames">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+        <div class="stack">
+          <span class="micro">Step 2</span>
+          <h2>The audio becomes numbers.</h2>
+          <p class="lead">The device samples the sound many times per second. Then the recognizer slices the stream into tiny pieces, often around a few milliseconds each.</p>
+          <div class="callout">
+            <h3>Why slice it?</h3>
+            <p>Speech changes quickly. Looking at tiny pieces helps the system compare one small sound at a time, then rebuild the full sentence.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-6" data-step="06 / 17">
+      <div class="content split">
+        <div class="stack">
+          <span class="micro">Step 3</span>
+          <h2>A spectrogram turns sound into a picture.</h2>
+          <p class="lead">A spectrogram shows which frequencies are strong at each moment. Think of it as a heat map for sound.</p>
+          <ul class="checklist">
+            <li><span class="check">X</span><span>Left to right is time.</span></li>
+            <li><span class="check">Y</span><span>Bottom to top is low pitch to high pitch.</span></li>
+            <li><span class="check">*</span><span>Brighter areas mean stronger sound energy.</span></li>
+          </ul>
+        </div>
+        <div>
+          <div class="spectrogram" aria-label="Stylized spectrogram">
+            <span style="--h:36;--o:.42"></span><span style="--h:70;--o:.7"></span><span style="--h:110;--o:.95"></span><span style="--h:58;--o:.62"></span><span style="--h:142;--o:.98"></span><span style="--h:86;--o:.75"></span><span style="--h:44;--o:.48"></span><span style="--h:154;--o:.98"></span><span style="--h:122;--o:.92"></span><span style="--h:78;--o:.7"></span><span style="--h:52;--o:.5"></span><span style="--h:132;--o:.95"></span><span style="--h:94;--o:.82"></span><span style="--h:48;--o:.46"></span><span style="--h:166;--o:1"></span><span style="--h:125;--o:.9"></span><span style="--h:82;--o:.72"></span><span style="--h:54;--o:.54"></span><span style="--h:138;--o:.95"></span><span style="--h:170;--o:1"></span><span style="--h:108;--o:.86"></span><span style="--h:64;--o:.58"></span><span style="--h:42;--o:.44"></span><span style="--h:118;--o:.82"></span><span style="--h:150;--o:.97"></span><span style="--h:88;--o:.72"></span><span style="--h:62;--o:.55"></span><span style="--h:34;--o:.38"></span>
+          </div>
+          <div class="axis"><span>time -></span><span>frequency up</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-7" data-step="07 / 17">
+      <div class="content split equal">
+        <div class="stack">
+          <span class="micro">Step 4</span>
+          <h2>The system listens for sound patterns, not letters.</h2>
+          <p class="lead">Speech is made from small sound units. The same written letter can sound different, and the same sound can be written different ways.</p>
+          <div class="note">Example: "read" in "I read daily" and "I read yesterday" is written the same, but pronounced differently.</div>
+        </div>
+        <div class="grid-2">
+          <div class="lesson-card bubble-card">
+            <div class="num">ba</div>
+            <h3>Sounds</h3>
+            <p>The model hears short acoustic patterns like vowels, consonants, pauses, stress, and rhythm.</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="num">bar</div>
+            <h3>Words</h3>
+            <p>Those patterns are matched against possible words, then the sentence context helps choose.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide sage" id="slide-8" data-step="08 / 17">
+      <div class="content split">
+        <div class="bubble-card guess-board">
+          <h3>What did the person say?</h3>
+          <div class="guess">
+            <strong>"recognize speech"</strong>
+            <span class="meter"><span style="--w:88%"></span></span>
+          </div>
+          <div class="guess">
+            <strong>"wreck a nice beach"</strong>
+            <span class="meter"><span style="--w:41%"></span></span>
+          </div>
+          <div class="guess">
+            <strong>"recognized peach"</strong>
+            <span class="meter"><span style="--w:28%"></span></span>
+          </div>
+          <p class="caption">The winner is usually the phrase that best fits both the sound and the language context.</p>
+        </div>
+        <div class="stack">
+          <span class="micro">Step 5</span>
+          <h2>The recognizer ranks likely sentences.</h2>
+          <p class="lead">Older ASR systems often combined three ideas: what the sound resembles, how words are pronounced, and which word sequence makes sense.</p>
+          <div class="model-stack">
+            <div class="model-row"><strong>Acoustic model</strong><p class="small">What sounds did we hear?</p></div>
+            <div class="model-row"><strong>Pronunciation model</strong><p class="small">Which words can sound like that?</p></div>
+            <div class="model-row"><strong>Language model</strong><p class="small">Which sentence is most natural?</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-9" data-step="09 / 17">
+      <div class="content split">
+        <div class="stack">
+          <span class="micro">Old-school ASR</span>
+          <h2>Before deep learning, the pipeline was more hand-built.</h2>
+          <p class="lead">For many years, speech systems used Hidden Markov Models and carefully designed features. They worked, but needed lots of engineering.</p>
+          <div class="callout">
+            <h3>Plain-English HMM idea</h3>
+            <p>The machine cannot directly see the word you meant. It sees sound clues, then estimates the hidden path of sounds and words that probably produced them.</p>
+          </div>
+        </div>
+        <div class="timeline">
+          <div class="era">
+            <div class="year">1950s-1960s</div>
+            <div><h3>Small vocabularies</h3><p>Early systems recognized digits or a few spoken commands.</p></div>
+          </div>
+          <div class="era">
+            <div class="year">1980s-2000s</div>
+            <div><h3>Statistical ASR</h3><p>HMMs, pronunciation dictionaries, and language models became the classic setup.</p></div>
+          </div>
+          <div class="era">
+            <div class="year">2010s-now</div>
+            <div><h3>Neural ASR</h3><p>Deep learning learned more of the pipeline directly from large audio datasets.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide dark" id="slide-10" data-step="10 / 17">
+      <div class="content stack">
+        <div class="center stack" style="justify-items:center">
+          <span class="micro">Modern ASR</span>
+          <h2>Today, the model learns more from data.</h2>
+          <p class="lead">Modern systems often use neural networks that learn sound patterns, spelling, timing, and context together.</p>
+        </div>
+        <div class="grid-3">
+          <div class="lesson-card bubble-card">
+            <div class="icon" style="background:var(--gold);color:#2a2210">CTC</div>
+            <h3>Aligns sound to text</h3>
+            <p>Useful when nobody has marked exactly which millisecond matches each letter.</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="icon" style="background:var(--gold);color:#2a2210">RNN</div>
+            <h3>Streams while you talk</h3>
+            <p>RNN-Transducer style models help phones produce words before the sentence is finished.</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="icon" style="background:var(--gold);color:#2a2210">LLM</div>
+            <h3>Uses broad context</h3>
+            <p>Transformer systems and large multilingual data improve robustness across topics and languages.</p>
+          </div>
+        </div>
+        <div class="note" style="background:rgba(250,250,247,.08);border-color:rgba(250,250,247,.18);color:rgba(250,250,247,.78)">The biggest shift: instead of manually telling the computer every rule, we train models on many hours of speech and transcripts so they learn the patterns.</div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-11" data-step="11 / 17">
+      <div class="content split equal">
+        <div class="stack">
+          <span class="micro">Why it still fails</span>
+          <h2>Speech is messy in real life.</h2>
+          <p class="lead">People mumble, interrupt themselves, use slang, switch languages, speak with different accents, and record in noisy rooms.</p>
+        </div>
+        <div class="grid-2">
+          <div class="lesson-card bubble-card">
+            <div class="num">01</div>
+            <h3>Sound problems</h3>
+            <p>Background noise, echo, cheap microphones, distance from the phone, overlapping voices.</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="num">02</div>
+            <h3>Language problems</h3>
+            <p>Names, local slang, domain words, code-switching, rare products, new brands.</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="num">03</div>
+            <h3>Speaker differences</h3>
+            <p>Accent, speed, age, dialect, emotion, disability, or pronunciation differences.</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="num">04</div>
+            <h3>Context gaps</h3>
+            <p>The audio may sound like two possible phrases. Without context, the wrong one can win.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide sage" id="slide-12" data-step="12 / 17">
+      <div class="content stack">
+        <div class="center stack" style="justify-items:center">
+          <span class="micro">Smart speakers</span>
+          <h2>Alexa-style assistants add more steps after the transcript.</h2>
+          <p class="lead">Speech recognition only writes the words. The assistant still has to understand intent and act.</p>
+        </div>
+        <div class="assistant-flow">
+          <div class="flow-step">
+            <div class="icon">1</div>
+            <h3>Wake word</h3>
+            <p class="small">"Alexa" or "Hey Siri" tells the device to pay attention.</p>
+          </div>
+          <div class="flow-step">
+            <div class="icon">2</div>
+            <h3>Speech to text</h3>
+            <p class="small">The spoken request becomes a transcript.</p>
+          </div>
+          <div class="flow-step">
+            <div class="icon">3</div>
+            <h3>Intent</h3>
+            <p class="small">NLP figures out what the person wants.</p>
+          </div>
+          <div class="flow-step">
+            <div class="icon">4</div>
+            <h3>Action</h3>
+            <p class="small">Play music, set a timer, search, or call an API.</p>
+          </div>
+          <div class="flow-step">
+            <div class="icon">5</div>
+            <h3>Talk back</h3>
+            <p class="small">Text-to-speech turns the reply into a voice.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-13" data-step="13 / 17">
+      <div class="content split">
+        <div class="stack">
+          <span class="micro">Fairness and access</span>
+          <h2>A system is only as fair as its testing.</h2>
+          <p class="lead">If the training data under-represents some accents, dialects, microphones, or environments, the model may work better for some people than others.</p>
+          <ul class="checklist">
+            <li><span class="check">A</span><span>Use diverse training and test audio.</span></li>
+            <li><span class="check">B</span><span>Measure accuracy by accent, region, gender, age, and language mix when appropriate.</span></li>
+            <li><span class="check">C</span><span>Let users correct mistakes so the system can improve.</span></li>
+          </ul>
+        </div>
+        <div class="score-card bubble-card">
+          <span class="micro">Research example</span>
+          <div class="big-number">35%</div>
+          <p class="lead">Average word error rate reported for Black speakers across five commercial ASR systems in a 2020 PNAS study, versus 19% for white speakers.</p>
+          <p class="caption" style="margin-top:14px">This is not a fixed law of speech recognition. It is a warning: audit the system before using it in high-stakes settings.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-14" data-step="14 / 17">
+      <div class="content split equal">
+        <div class="score-card bubble-card">
+          <span class="micro">Accuracy metric</span>
+          <h2 style="font-size:clamp(34px,4vw,58px)">Word Error Rate</h2>
+          <p class="lead">WER counts three kinds of transcript mistakes:</p>
+          <div class="model-stack">
+            <div class="model-row"><strong>Substitution</strong><p class="small">Wrong word: "cat" becomes "cap".</p></div>
+            <div class="model-row"><strong>Deletion</strong><p class="small">Missing word: "send the invoice" becomes "send invoice".</p></div>
+            <div class="model-row"><strong>Insertion</strong><p class="small">Extra word: "send the invoice" becomes "send the the invoice".</p></div>
+          </div>
+        </div>
+        <div class="score-card bubble-card">
+          <span class="micro">Simple formula</span>
+          <div class="big-number" style="font-size:clamp(42px,5vw,74px)">S + D + I</div>
+          <p class="lead" style="color:var(--foreground)">divided by total words</p>
+          <div class="note">Lower WER usually means a better transcript. But for real products, also check whether the important words are correct: names, prices, medical terms, product codes, dates, and instructions.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide sage" id="wer-demo" data-step="WER demo">
+      <div class="content split equal">
+        <div class="stack">
+          <span class="micro">Interactive accuracy demo</span>
+          <h2>Let the audience score a bad transcript.</h2>
+          <p class="lead">Type what the speaker really said, then type what the machine wrote. The deck calculates Word Error Rate instantly.</p>
+          <div class="callout">
+            <h3>What to notice</h3>
+            <p>One small transcript mistake can be harmless. A wrong price, name, date, or medical instruction can change the whole meaning.</p>
+          </div>
+        </div>
+        <div class="demo-box bubble-card">
+          <div class="wer-lab">
+            <label>
+              Correct sentence
+              <textarea id="werReference">ModSapp can reply to customers at eleven pm</textarea>
+            </label>
+            <label>
+              Machine transcript
+              <textarea id="werHypothesis">ModSapp can apply to customers at 11 pm</textarea>
+            </label>
+            <div class="wer-result">
+              <div class="wer-score" id="werScore">0%</div>
+              <div>
+                <h3 id="werSummary">No mistakes yet.</h3>
+                <p class="small" id="werDetail">Edit the transcript to see substitutions, deletions, and insertions.</p>
+              </div>
+            </div>
+            <div class="error-chips" id="werChips" aria-label="Detected word errors"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide dark" id="slide-15" data-step="15 / 17">
+      <div class="content split">
+        <div class="stack">
+          <span class="micro">How to improve it</span>
+          <h2>Better audio plus better context beats guessing.</h2>
+          <p class="lead">Most business improvements are practical, not mystical.</p>
+        </div>
+        <div class="grid-2">
+          <div class="lesson-card bubble-card">
+            <div class="check">1</div>
+            <h3>Clean input</h3>
+            <p>Good microphone, less echo, less background noise, one speaker at a time.</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="check">2</div>
+            <h3>Custom vocabulary</h3>
+            <p>Add names, products, cities, local words, brand names, and industry terms.</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="check">3</div>
+            <h3>Domain context</h3>
+            <p>A school app, clinic app, or sales app should bias toward the words used in that domain.</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="check">4</div>
+            <h3>Human correction loop</h3>
+            <p>Let people correct the transcript, then use those corrections to improve future results.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-16" data-step="16 / 17">
+      <div class="content split">
+        <div class="stack">
+          <span class="micro">Practical choices</span>
+          <h2>Cloud, on-device, or hybrid?</h2>
+          <p class="lead">The right setup depends on speed, privacy, cost, internet reliability, and how much customization you need.</p>
+        </div>
+        <div class="grid-3">
+          <div class="lesson-card bubble-card">
+            <div class="icon">CL</div>
+            <h3>Cloud</h3>
+            <p>Strong models, easy scaling, many languages. Needs internet and careful privacy handling.</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="icon">PH</div>
+            <h3>On-device</h3>
+            <p>Faster and more private. Limited by phone/laptop memory and model size.</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="icon">HY</div>
+            <h3>Hybrid</h3>
+            <p>Wake word or quick commands local; heavy transcription or summaries in the cloud.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide sage" id="scenario-bank" data-step="Scenarios">
+      <div class="content stack">
+        <div class="center stack" style="justify-items:center">
+          <span class="micro">Scenario bank</span>
+          <h2>Use examples people can recognize immediately.</h2>
+          <p class="lead">Speech recognition is useful in many places, but context decides whether the result is safe enough to trust.</p>
+        </div>
+        <div class="scenario-grid">
+          <div class="scenario-card bubble-card">
+            <h3>WhatsApp business order</h3>
+            <div class="quote">"I want the black sneakers, size 42, delivery to East Legon."</div>
+            <p class="small">Most important words: product, size, location, price, and delivery time.</p>
+          </div>
+          <div class="scenario-card bubble-card">
+            <h3>Class recording</h3>
+            <div class="quote">"Please summarize yesterday's AI class and list the assignment."</div>
+            <p class="small">After transcription: summarize, extract tasks, and maybe create reminders.</p>
+          </div>
+          <div class="scenario-card bubble-card">
+            <h3>Clinic note</h3>
+            <div class="quote">"Take one tablet twice daily after meals."</div>
+            <p class="small">High-risk example: one wrong word can change medical meaning.</p>
+          </div>
+          <div class="scenario-card bubble-card">
+            <h3>Noisy shop</h3>
+            <div class="quote">"Make it two packs, not three."</div>
+            <p class="small">Play background noise and ask the audience why quantity words are easy to miss.</p>
+          </div>
+          <div class="scenario-card bubble-card">
+            <h3>Local names</h3>
+            <div class="quote">"Send it to Kweku, not Kwesi."</div>
+            <p class="small">Custom vocabulary matters when names sound similar or are under-represented in training data.</p>
+          </div>
+          <div class="scenario-card bubble-card">
+            <h3>Accent/code-switching</h3>
+            <div class="quote">"Chaley, reserve am for me. I go pay MoMo now."</div>
+            <p class="small">A good system understands how customers actually speak, not only textbook English.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="platform-lab" data-step="Platform lab">
+      <div class="content stack">
+        <div class="center stack" style="justify-items:center">
+          <span class="micro">Practical platform lab</span>
+          <h2>Different tools show different parts of voice AI.</h2>
+          <p class="lead">Speech recognition is only one layer. These platforms make the full pipeline visible: listen, transcribe, understand, and speak back.</p>
+        </div>
+        <div class="platform-grid">
+          <div class="platform-card bubble-card">
+            <span class="platform-label">Voice output</span>
+            <h3>ElevenLabs</h3>
+            <p class="small">Turns text into realistic speech, supports voice agents, dubbing, and voice cloning with permission.</p>
+            <a class="platform-link" href="https://elevenlabs.io/" target="_blank" rel="noreferrer">Open ElevenLabs</a>
+          </div>
+          <div class="platform-card bubble-card">
+            <span class="platform-label">Full voice assistant</span>
+            <h3>OpenAI Audio / Realtime</h3>
+            <p class="small">Shows the complete loop: speech-to-text, reasoning, and spoken response in one experience.</p>
+            <a class="platform-link" href="https://developers.openai.com/api/docs/guides/speech-to-text" target="_blank" rel="noreferrer">Open OpenAI audio</a>
+          </div>
+          <div class="platform-card bubble-card">
+            <span class="platform-label">Live transcription</span>
+            <h3>Deepgram</h3>
+            <p class="small">Shows fast real-time transcription and voice-agent infrastructure for live conversations.</p>
+            <a class="platform-link" href="https://deepgram.com/product/voice-agent-api" target="_blank" rel="noreferrer">Open Deepgram</a>
+          </div>
+          <div class="platform-card bubble-card">
+            <span class="platform-label">Audio analysis</span>
+            <h3>AssemblyAI</h3>
+            <p class="small">Transcribes recorded or live audio and can expose useful structure such as speakers and key terms.</p>
+            <a class="platform-link" href="https://www.assemblyai.com/products/streaming-speech-to-text" target="_blank" rel="noreferrer">Open AssemblyAI</a>
+          </div>
+          <div class="platform-card bubble-card">
+            <span class="platform-label">Custom words</span>
+            <h3>Google Speech-to-Text</h3>
+            <p class="small">Useful for showing custom vocabulary, multilingual transcription, and enterprise speech workflows.</p>
+            <a class="platform-link" href="https://cloud.google.com/speech-to-text" target="_blank" rel="noreferrer">Open Google STT</a>
+          </div>
+          <div class="platform-card bubble-card">
+            <span class="platform-label">Enterprise speech</span>
+            <h3>Microsoft Azure Speech</h3>
+            <p class="small">Shows captions, call-center style transcription, pronunciation tools, and cloud speech services.</p>
+            <a class="platform-link" href="https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-to-text" target="_blank" rel="noreferrer">Open Azure Speech</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide sage" id="hands-on-lab-flow" data-step="Hands-on">
+      <div class="content stack">
+        <div class="center stack" style="justify-items:center">
+          <span class="micro">Hands-on flow</span>
+          <h2>One sentence, four transformations.</h2>
+          <p class="lead">The same sentence travels through the voice AI pipeline so every layer becomes visible.</p>
+        </div>
+        <div class="lab-board">
+          <div class="lab-step bubble-card">
+            <div class="num">1</div>
+            <h3>Speak</h3>
+            <p class="small">Sentence: "I want the black sneakers, size 42, delivery to East Legon."</p>
+          </div>
+          <div class="lab-step bubble-card">
+            <div class="num">2</div>
+            <h3>Transcribe</h3>
+            <p class="small">Chrome, Deepgram, AssemblyAI, Google, Azure, or OpenAI turns the audio into text.</p>
+          </div>
+          <div class="lab-step bubble-card">
+            <div class="num">3</div>
+            <h3>Understand</h3>
+            <p class="small">The text becomes structured meaning: product, size, location, delivery request.</p>
+          </div>
+          <div class="lab-step bubble-card">
+            <div class="num">4</div>
+            <h3>Speak back</h3>
+            <p class="small">ElevenLabs or OpenAI TTS turns the reply into a natural voice.</p>
+          </div>
+        </div>
+        <div class="note">The practical lesson: voice AI is not one tool. It is a chain of tools working together.</div>
+      </div>
+    </section>
+
+    <section class="slide" id="platform-comparison" data-step="Compare">
+      <div class="content split">
+        <div class="stack">
+          <span class="micro">Platform comparison</span>
+          <h2>Each platform answers a different question.</h2>
+          <p class="lead">The best demo depends on which part of voice AI needs to become visible.</p>
+        </div>
+        <div class="model-stack">
+          <div class="model-row"><strong>Can it hear me?</strong><p class="small">Chrome speech recognition, Deepgram, AssemblyAI, Google, Azure, OpenAI transcription.</p></div>
+          <div class="model-row"><strong>Can it understand me?</strong><p class="small">OpenAI or another LLM extracts intent, fields, summary, or next action from the transcript.</p></div>
+          <div class="model-row"><strong>Can it talk back?</strong><p class="small">ElevenLabs or OpenAI text-to-speech turns the response into a natural voice.</p></div>
+          <div class="model-row"><strong>Can it work in real life?</strong><p class="small">Accuracy, speed, privacy, cost, local words, accents, and background noise decide production readiness.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide sage" id="real-life-applications" data-step="Applications">
+      <div class="content stack">
+        <div class="center stack" style="justify-items:center">
+          <span class="micro">Real-life applications</span>
+          <h2>Speech recognition is already around us.</h2>
+          <p class="lead">Anytime a machine listens to speech and turns it into text, speech recognition is working in the background.</p>
+        </div>
+        <div class="scenario-grid">
+          <div class="scenario-card bubble-card">
+            <h3>Voice assistants</h3>
+            <div class="quote">"Set an alarm for 6 AM."</div>
+            <p class="small">Siri, Alexa, Google Assistant, and phone assistants first transcribe the command, then decide what action to take.</p>
+          </div>
+          <div class="scenario-card bubble-card">
+            <h3>Live captions</h3>
+            <div class="quote">Speech -> captions on screen</div>
+            <p class="small">Meetings, YouTube videos, online classes, and events use speech recognition to make spoken content readable.</p>
+          </div>
+          <div class="scenario-card bubble-card">
+            <h3>Customer service</h3>
+            <div class="quote">"I want to check my order."</div>
+            <p class="small">Call centers and voice bots use transcription to route customers, summarize calls, and detect common issues.</p>
+          </div>
+          <div class="scenario-card bubble-card">
+            <h3>Education</h3>
+            <div class="quote">Class audio -> notes</div>
+            <p class="small">Recorded lessons can become transcripts, summaries, quizzes, revision notes, and assignment reminders.</p>
+          </div>
+          <div class="scenario-card bubble-card">
+            <h3>Healthcare</h3>
+            <div class="quote">Doctor speaks -> clinical note</div>
+            <p class="small">Doctors can dictate notes, but accuracy matters because medical words, dosage, and timing are high risk.</p>
+          </div>
+          <div class="scenario-card bubble-card">
+            <h3>Business operations</h3>
+            <div class="quote">Voice order -> structured request</div>
+            <p class="small">Businesses can capture orders, complaints, meeting actions, sales calls, and follow-ups from spoken conversations.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="more-real-life-applications" data-step="More uses">
+      <div class="content split">
+        <div class="stack">
+          <span class="micro">More places it shows up</span>
+          <h2>Speech recognition is a bridge between people and software.</h2>
+          <p class="lead">It makes computers easier to use because speaking is often faster and more natural than typing.</p>
+        </div>
+        <div class="model-stack">
+          <div class="model-row"><strong>Accessibility</strong><p class="small">People who cannot type easily can control devices, dictate messages, and read captions.</p></div>
+          <div class="model-row"><strong>Translation</strong><p class="small">Speech can become text, then translated into another language, then spoken back.</p></div>
+          <div class="model-row"><strong>Search</strong><p class="small">Voice search lets people find videos, products, locations, and answers without typing.</p></div>
+          <div class="model-row"><strong>Security and compliance</strong><p class="small">Organizations can review calls, flag risky words, and keep searchable records.</p></div>
+          <div class="model-row"><strong>Cars and smart devices</strong><p class="small">Drivers and users can control music, navigation, lights, and devices hands-free.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="extra-demo-menu" data-step="More demos">
+      <div class="content stack">
+        <div class="center stack" style="justify-items:center">
+          <span class="micro">Live test menu</span>
+          <h2>Four ways to test voice recognition.</h2>
+          <p class="lead">These are simple, no-code demos that make speech recognition feel real.</p>
+        </div>
+        <div class="demo-menu">
+          <div class="demo-menu-item bubble-card">
+            <div class="demo-time">3 min</div>
+            <div>
+              <h3>Clear vs noisy speech</h3>
+              <p class="small">Say the same sentence normally, then while people clap or play low music. Compare the transcript.</p>
+              <div class="scenario-script"><div>Phrase: "Deliver two packs to East Legon before 5 pm."</div></div>
+            </div>
+          </div>
+          <div class="demo-menu-item bubble-card">
+            <div class="demo-time">4 min</div>
+            <div>
+              <h3>Context saves the answer</h3>
+              <p class="small">Two phrases can sound similar. Context helps the system choose the better transcript.</p>
+              <div class="scenario-script"><div>"I scream" vs "ice cream"</div><div>"recognize speech" vs "wreck a nice beach"</div></div>
+            </div>
+          </div>
+          <div class="demo-menu-item bubble-card">
+            <div class="demo-time">5 min</div>
+            <div>
+              <h3>Local words challenge</h3>
+              <p class="small">Say Ghanaian names, places, and business terms. Show why custom vocabulary matters.</p>
+              <div class="scenario-script"><div>Kweku, Kwesi, Adwoa, East Legon, Osu, MoMo, Telecel Cash</div></div>
+            </div>
+          </div>
+          <div class="demo-menu-item bubble-card">
+            <div class="demo-time">5 min</div>
+            <div>
+              <h3>WER competition</h3>
+              <p class="small">Two groups create bad transcripts, then compare which one has the higher error rate.</p>
+              <div class="scenario-script"><div>Use the WER calculator slide right after this.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide sage" id="business-demo-script" data-step="Demo script">
+      <div class="content split">
+        <div class="stack">
+          <span class="micro">Complete business example</span>
+          <h2>One complete business story.</h2>
+          <p class="lead">This connects speech recognition to a real business workflow, so non-technical people see the value immediately.</p>
+          <div class="callout">
+            <h3>Teaching point</h3>
+            <p>Speech recognition is only the first layer. A useful AI system also extracts intent, checks business rules, and takes action.</p>
+          </div>
+        </div>
+        <div class="scenario-script">
+          <div><strong>1. Voice input:</strong> "I want the black sneakers, size 42, delivery to East Legon."</div>
+          <div><strong>2. Transcript:</strong> The system writes the sentence as text.</div>
+          <div><strong>3. Extract meaning:</strong> Product = black sneakers, size = 42, location = East Legon.</div>
+          <div><strong>4. Business action:</strong> Check stock, calculate delivery, send payment link.</div>
+          <div><strong>5. Safety check:</strong> If size or location is unclear, ask a follow-up question instead of guessing.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide sage" id="slide-17" data-step="17 / 17">
+      <div class="content stack">
+        <div class="center stack" style="justify-items:center">
+          <span class="micro">Final takeaway</span>
+          <h2>Speech recognition is a translation problem.</h2>
+          <p class="lead">It translates messy human sound into text by combining audio patterns, learned language patterns, and probability.</p>
+        </div>
+        <div class="grid-3">
+          <div class="lesson-card bubble-card">
+            <div class="num">1</div>
+            <h3>Sound becomes numbers</h3>
+            <p>The microphone records vibrations and the computer samples them.</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="num">2</div>
+            <h3>Numbers become patterns</h3>
+            <p>Spectrograms and neural networks reveal the structure inside speech.</p>
+          </div>
+          <div class="lesson-card bubble-card">
+            <div class="num">3</div>
+            <h3>Patterns become words</h3>
+            <p>The model chooses the most likely transcript, then NLP can interpret the meaning.</p>
+          </div>
+        </div>
+        <div class="center">
+          <button class="print-link" type="button" onclick="window.print()">Export or print slides</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="sources" data-step="Sources">
+      <div class="content stack">
+        <span class="micro">Research sources</span>
+        <h2>Sources used for the deck</h2>
+        <p class="lead">These are the references behind the explanation, from foundational ASR concepts to modern neural speech recognition.</p>
+        <div class="sources">
+          <a href="https://wiki.aalto.fi/spaces/ITSP/pages/165125762/Speech%2BRecognition" target="_blank" rel="noreferrer">Aalto University Wiki: Speech Recognition<span>Classic ASR components: acoustic model, pronunciation model, language model, HMM framing.</span></a>
+          <a href="https://speechprocessingbook.aalto.fi/Representations/Spectrogram_and_the_STFT.html" target="_blank" rel="noreferrer">Aalto Speech Processing Book: Spectrogram and STFT<span>How sound can be represented over time and frequency.</span></a>
+          <a href="https://proceedings.mlr.press/v48/amodei16.html" target="_blank" rel="noreferrer">Deep Speech 2, ICML 2016<span>End-to-end deep learning for English and Mandarin speech recognition.</span></a>
+          <a href="https://arxiv.org/abs/2006.11477" target="_blank" rel="noreferrer">wav2vec 2.0, 2020<span>Self-supervised learning from unlabeled speech audio.</span></a>
+          <a href="https://proceedings.mlr.press/v202/radford23a.html" target="_blank" rel="noreferrer">Whisper, ICML 2023<span>Large-scale weak supervision with 680,000 hours of multilingual/multitask audio.</span></a>
+          <a href="https://research.google/blog/an-all-neural-on-device-speech-recognizer/" target="_blank" rel="noreferrer">Google Research: On-device Speech Recognizer<span>RNN-T and practical streaming speech recognition on phones.</span></a>
+          <a href="https://www.pnas.org/doi/10.1073/pnas.1915768117" target="_blank" rel="noreferrer">PNAS: Racial disparities in automated speech recognition<span>Evidence that commercial ASR systems can perform unevenly across speaker groups.</span></a>
+          <a href="https://cloud.google.com/speech-to-text" target="_blank" rel="noreferrer">Google Cloud Speech-to-Text<span>Model adaptation, custom vocabulary, and production STT capabilities.</span></a>
+          <a href="https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-to-text" target="_blank" rel="noreferrer">Microsoft Azure Speech-to-Text<span>Real-time and batch transcription framing.</span></a>
+          <a href="https://www.ibm.com/history/voice-recognition" target="_blank" rel="noreferrer">IBM: Speech recognition history<span>Historical context and accessibility applications.</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const deck = document.getElementById("deck");
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const progress = document.getElementById("progressBar");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const sessionTimer = document.getElementById("sessionTimer");
+    const timerToggle = document.getElementById("timerToggle");
+    const timerReset = document.getElementById("timerReset");
+    const contentSlides = slides.filter((slide) => slide.id !== "sources");
+    const stageItems = Array.from(document.querySelectorAll(".stage-item"));
+    const speechOutput = document.getElementById("speechOutput");
+    const speechStatus = document.getElementById("speechStatus");
+    const startMicBtn = document.getElementById("startMicBtn");
+    const stopMicBtn = document.getElementById("stopMicBtn");
+    const sampleButtons = Array.from(document.querySelectorAll("[data-sample]"));
+    const werReference = document.getElementById("werReference");
+    const werHypothesis = document.getElementById("werHypothesis");
+    const werScore = document.getElementById("werScore");
+    const werSummary = document.getElementById("werSummary");
+    const werDetail = document.getElementById("werDetail");
+    const werChips = document.getElementById("werChips");
+    const SESSION_SECONDS = 40 * 60;
+    let remainingSeconds = SESSION_SECONDS;
+    let timerRunning = false;
+    let timerInterval = null;
+    let recognition = null;
+    let stageTimer = null;
+
+    contentSlides.forEach((slide, index) => {
+      slide.dataset.step = `${String(index + 1).padStart(2, "0")} / ${contentSlides.length}`;
+    });
+    const sourceSlide = document.getElementById("sources");
+    if (sourceSlide) sourceSlide.dataset.step = "Sources";
+
+    function currentIndex() {
+      const midpoint = deck.scrollTop + window.innerHeight / 2;
+      let index = 0;
+      for (let i = 0; i < slides.length; i += 1) {
+        if (slides[i].offsetTop <= midpoint) index = i;
+      }
+      return index;
+    }
+
+    function updateProgress() {
+      const idx = currentIndex();
+      const pct = slides.length <= 1 ? 100 : (idx / (slides.length - 1)) * 100;
+      progress.style.width = `${pct}%`;
+      prevBtn.disabled = idx === 0;
+      nextBtn.disabled = idx === slides.length - 1;
+    }
+
+    function go(delta) {
+      const idx = Math.max(0, Math.min(slides.length - 1, currentIndex() + delta));
+      slides[idx].scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function renderTimer() {
+      const minutes = Math.floor(remainingSeconds / 60);
+      const seconds = remainingSeconds % 60;
+      sessionTimer.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+      sessionTimer.style.color = remainingSeconds <= 300 ? "var(--danger)" : "var(--primary)";
+      timerToggle.textContent = timerRunning ? "Pause" : "Start";
+    }
+
+    function startTimer() {
+      if (timerRunning) return;
+      timerRunning = true;
+      timerInterval = window.setInterval(() => {
+        remainingSeconds = Math.max(0, remainingSeconds - 1);
+        if (remainingSeconds === 0) {
+          window.clearInterval(timerInterval);
+          timerRunning = false;
+        }
+        renderTimer();
+      }, 1000);
+      renderTimer();
+    }
+
+    function pauseTimer() {
+      timerRunning = false;
+      window.clearInterval(timerInterval);
+      renderTimer();
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      remainingSeconds = SESSION_SECONDS;
+      renderTimer();
+    }
+
+    function setStage(index) {
+      stageItems.forEach((item, itemIndex) => {
+        item.classList.toggle("is-active", itemIndex === index);
+      });
+    }
+
+    function runPipelineDemo(text, source = "sample") {
+      if (!speechOutput) return;
+      window.clearInterval(stageTimer);
+      speechOutput.textContent = source === "mic" ? text || "Listening..." : text;
+      speechStatus.textContent = source === "mic"
+        ? "Live transcript from your browser. Watch the stages light up while the sentence is processed."
+        : "Sample phrase loaded. This is the backup option when microphone access is unavailable.";
+      let stage = 0;
+      setStage(stage);
+      stageTimer = window.setInterval(() => {
+        stage = (stage + 1) % stageItems.length;
+        setStage(stage);
+      }, 720);
+      window.setTimeout(() => {
+        window.clearInterval(stageTimer);
+        setStage(stageItems.length - 1);
+      }, 3600);
+    }
+
+    function setupSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        if (speechStatus) {
+          speechStatus.textContent = "Live microphone transcription is not supported in this browser. Use Chrome or the sample phrases.";
+        }
+        if (startMicBtn) startMicBtn.disabled = true;
+        return;
+      }
+
+      recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = true;
+      recognition.continuous = false;
+
+      recognition.onstart = () => {
+        startMicBtn.disabled = true;
+        stopMicBtn.disabled = false;
+        speechStatus.textContent = "Listening. Say: ModSapp can reply to customers at eleven pm.";
+        runPipelineDemo("Listening...", "mic");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = Array.from(event.results)
+          .map((result) => result[0]?.transcript || "")
+          .join(" ")
+          .trim();
+        if (transcript) runPipelineDemo(transcript, "mic");
+      };
+
+      recognition.onerror = (event) => {
+        speechStatus.textContent = `Microphone demo could not run: ${event.error}. Use a sample phrase instead.`;
+        startMicBtn.disabled = false;
+        stopMicBtn.disabled = true;
+      };
+
+      recognition.onend = () => {
+        startMicBtn.disabled = false;
+        stopMicBtn.disabled = true;
+        if (speechOutput.textContent === "Listening...") {
+          speechOutput.textContent = "No transcript captured. Try again or use a sample phrase.";
+        }
+      };
+    }
+
+    function tokenize(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^\w' ]+/g, " ")
+        .split(/\s+/)
+        .filter(Boolean);
+    }
+
+    function plural(count, label) {
+      return `${count} ${label}${count === 1 ? "" : "s"}`;
+    }
+
+    function calculateWer(referenceWords, hypothesisWords) {
+      const rows = referenceWords.length + 1;
+      const cols = hypothesisWords.length + 1;
+      const dp = Array.from({ length: rows }, () => Array(cols).fill(0));
+      const back = Array.from({ length: rows }, () => Array(cols).fill(""));
+
+      for (let i = 1; i < rows; i += 1) {
+        dp[i][0] = i;
+        back[i][0] = "D";
+      }
+      for (let j = 1; j < cols; j += 1) {
+        dp[0][j] = j;
+        back[0][j] = "I";
+      }
+
+      for (let i = 1; i < rows; i += 1) {
+        for (let j = 1; j < cols; j += 1) {
+          if (referenceWords[i - 1] === hypothesisWords[j - 1]) {
+            dp[i][j] = dp[i - 1][j - 1];
+            back[i][j] = "M";
+          } else {
+            const substitute = dp[i - 1][j - 1] + 1;
+            const deletion = dp[i - 1][j] + 1;
+            const insertion = dp[i][j - 1] + 1;
+            const best = Math.min(substitute, deletion, insertion);
+            dp[i][j] = best;
+            back[i][j] = best === substitute ? "S" : best === deletion ? "D" : "I";
+          }
+        }
+      }
+
+      let i = referenceWords.length;
+      let j = hypothesisWords.length;
+      const errors = [];
+      while (i > 0 || j > 0) {
+        const op = back[i][j];
+        if (op === "M") {
+          i -= 1;
+          j -= 1;
+        } else if (op === "S") {
+          errors.push({ type: "Substitution", text: `${referenceWords[i - 1]} -> ${hypothesisWords[j - 1]}` });
+          i -= 1;
+          j -= 1;
+        } else if (op === "D") {
+          errors.push({ type: "Deletion", text: `missed "${referenceWords[i - 1]}"` });
+          i -= 1;
+        } else {
+          errors.push({ type: "Insertion", text: `added "${hypothesisWords[j - 1]}"` });
+          j -= 1;
+        }
+      }
+
+      return { distance: dp[referenceWords.length][hypothesisWords.length], errors: errors.reverse() };
+    }
+
+    function updateWer() {
+      if (!werReference || !werHypothesis) return;
+      const referenceWords = tokenize(werReference.value);
+      const hypothesisWords = tokenize(werHypothesis.value);
+      const result = calculateWer(referenceWords, hypothesisWords);
+      const total = Math.max(referenceWords.length, 1);
+      const score = Math.round((result.distance / total) * 100);
+      const counts = result.errors.reduce((acc, error) => {
+        acc[error.type] = (acc[error.type] || 0) + 1;
+        return acc;
+      }, {});
+
+      werScore.textContent = `${score}%`;
+      werSummary.textContent = result.distance === 0
+        ? "Perfect transcript."
+        : `${plural(result.distance, "word error")} found.`;
+      werDetail.textContent = [
+        plural(counts.Substitution || 0, "substitution"),
+        plural(counts.Deletion || 0, "deletion"),
+        plural(counts.Insertion || 0, "insertion"),
+      ].join(", ");
+      werChips.innerHTML = "";
+      if (result.errors.length === 0) {
+        const chip = document.createElement("span");
+        chip.textContent = "No errors";
+        werChips.appendChild(chip);
+      } else {
+        result.errors.forEach((error) => {
+          const chip = document.createElement("span");
+          chip.textContent = `${error.type}: ${error.text}`;
+          werChips.appendChild(chip);
+        });
+      }
+    }
+
+    prevBtn.addEventListener("click", () => go(-1));
+    nextBtn.addEventListener("click", () => go(1));
+    if (timerToggle) {
+      timerToggle.addEventListener("click", () => {
+        if (timerRunning) pauseTimer();
+        else startTimer();
+      });
+    }
+    if (timerReset) {
+      timerReset.addEventListener("click", resetTimer);
+    }
+    if (startMicBtn) {
+      startMicBtn.addEventListener("click", () => {
+        if (recognition) recognition.start();
+      });
+    }
+    if (stopMicBtn) {
+      stopMicBtn.addEventListener("click", () => {
+        if (recognition) recognition.stop();
+      });
+    }
+    sampleButtons.forEach((button) => {
+      button.addEventListener("click", () => runPipelineDemo(button.dataset.sample || "", "sample"));
+    });
+    [werReference, werHypothesis].forEach((field) => {
+      if (field) field.addEventListener("input", updateWer);
+    });
+    deck.addEventListener("scroll", () => requestAnimationFrame(updateProgress), { passive: true });
+    window.addEventListener("resize", updateProgress);
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
+        event.preventDefault();
+        go(1);
+      }
+      if (event.key === "ArrowLeft" || event.key === "PageUp") {
+        event.preventDefault();
+        go(-1);
+      }
+      if (event.key === "Home") {
+        event.preventDefault();
+        slides[0].scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      if (event.key === "End") {
+        event.preventDefault();
+        slides[slides.length - 1].scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+    setupSpeechRecognition();
+    updateWer();
+    renderTimer();
+    updateProgress();
+  </script>
+</body>
+</html>
