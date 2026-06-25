@@ -1,6 +1,10 @@
-# Youth in AI Workshop: Speech Recognition Presentation
+# Speech Recognition: How AI Listens
 
-An open-source, hands-on HTML presentation for teaching speech recognition to non-technical audiences.
+An open-source interactive learning resource created by **AI with Enoch** that explains how speech recognition turns human voice into text.
+
+This project breaks down what happens when someone speaks to Siri, Google Assistant, a voice bot, or a voice-to-text app. It explores how microphones capture speech, how AI recognises sound patterns, why accents and background noise affect accuracy, and how speech recognition can improve access to education, healthcare, customer support, and public services.
+
+Built for the **Youth in AI Series: Practical AI Skills for Social Impact**.
 
 The deck explains:
 

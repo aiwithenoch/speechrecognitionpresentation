@@ -2,7 +2,7 @@
   "name": "speechrecognitionpresentation",
   "version": "1.0.0",
   "private": false,
-  "description": "Youth in AI Workshop speech recognition presentation.",
+  "description": "An open-source interactive learning resource by AI with Enoch explaining how speech recognition turns human voice into text.",
   "license": "MIT",
   "scripts": {
     "start": "npx serve .",
