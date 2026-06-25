@@ -27,6 +27,34 @@ Learners explore:
 - how speech recognition is used in education, healthcare, customer support, accessibility, business, and public services
 - how platforms like ElevenLabs, OpenAI Audio, Deepgram, AssemblyAI, Google Speech-to-Text, and Azure Speech fit into the voice AI pipeline
 
+## How It Works: The Speech Recognition Pipeline
+
+Unlike a person who hears meaning naturally, a speech recognition system has to process voice step by step.
+
+This project includes a lightweight client-side simulator that shows the pipeline without requiring an API key, login, or paid platform.
+
+```mermaid
+flowchart TD
+    A["1. Incoming Speech<br/>Raw voice from a person"] --> B["2. Audio Cleanup<br/>Reduce noise, echo, and silence"]
+    B --> C["3. Feature Extractor<br/>Turn sound into useful patterns"]
+    C --> D["4. Acoustic Model<br/>Predict likely sounds and word pieces"]
+    D --> E["5. Language + Context<br/>Choose words that make sense together"]
+    E --> F["6. Final Transcript<br/>Return readable text"]
+```
+
+### Pipeline Breakdown
+
+| Stage | What Happens | Simple Example |
+| --- | --- | --- |
+| 1. Incoming Speech | A person speaks into a phone, laptop, headset, or smart speaker. | "Please send the class recording to my WhatsApp." |
+| 2. Audio Cleanup | The system tries to reduce noise, silence, echo, and messy background sound. | Room noise becomes less important than the voice. |
+| 3. Feature Extractor | The audio is split into tiny pieces and converted into sound patterns. | The system notices rhythm, pitch, and frequency shapes. |
+| 4. Acoustic Model | AI predicts likely sounds, syllables, or word pieces from those patterns. | It hears something like "class recording". |
+| 5. Language + Context | The system uses context to choose the most sensible sentence. | "class recording" is more likely than "glass recording". |
+| 6. Final Transcript | The best text version is returned for captions, search, summaries, bots, or actions. | `Please send the class recording to my WhatsApp.` |
+
+The important idea: speech recognition is not magic. It is a sequence of small guesses that become more confident as more context is added.
+
 ## Who This Is For
 
 This resource is designed for:
@@ -44,7 +72,7 @@ The presentation includes:
 
 - a 40-minute workshop flow
 - audience-facing explanations
-- dark speech-recognition pipeline simulator
+- GitHub README pipeline breakdown
 - no-API tap-through simulations
 - animated voice wave to transcript breakdown
 - one-on-one voice assistant conversation simulation
@@ -64,7 +92,7 @@ The presentation includes:
 | Opening | What speech recognition is and why it matters |
 | Voice-to-text | The basic meaning of speech recognition |
 | Pipeline | Sound waves, digital audio, spectrograms, and pattern matching |
-| Technical pipeline | Interactive dark pipeline showing speech, cleanup, features, model, context, and transcript |
+| GitHub pipeline guide | Speech, cleanup, features, model, context, and transcript explained step by step |
 | No-API simulations | Tap-through voice wave and voice assistant conversation demos |
 | Interactive demo | Live microphone transcription and sample phrase fallback |
 | Human recognizer challenge | Why noisy speech creates different interpretations |
@@ -76,15 +104,15 @@ The presentation includes:
 
 ## Hands-On Activities
 
-### 1. Speech Recognition Pipeline Simulator
+### 1. GitHub Pipeline Breakdown
 
-Learners tap through a dark pipeline view that shows the main stages:
+Learners can review the README diagram that shows the main stages:
 
 ```text
 incoming speech -> audio cleanup -> feature extraction -> acoustic model -> language context -> transcript
 ```
 
-Each stage updates the visible output, keywords, confidence, and noise risk.
+Each stage explains what happens to the voice before readable text appears.
 
 ### 2. Tap-Through Voice Wave Simulation
 
