@@ -1,102 +1,155 @@
 # Speech Recognition: How AI Listens
 
-An open-source interactive learning resource created by **AI with Enoch** that explains how speech recognition turns human voice into text.
+**An open-source interactive learning resource by AI with Enoch.**
 
-This project breaks down what happens when someone speaks to Siri, Google Assistant, a voice bot, or a voice-to-text app. It explores how microphones capture speech, how AI recognises sound patterns, why accents and background noise affect accuracy, and how speech recognition can improve access to education, healthcare, customer support, and public services.
+This project explains how speech recognition turns human voice into text, using a practical, visual, hands-on presentation built for the **Youth in AI Series: Practical AI Skills for Social Impact**.
 
-Built for the **Youth in AI Series: Practical AI Skills for Social Impact**.
+## Open the Live Presentation
 
-## Live Frontend
+Use the Vercel frontend to view and present the workshop:
 
-View the interactive presentation here:
+**[Launch the interactive presentation](https://speechrecognitionpresentation.vercel.app)**
 
-[https://speechrecognitionpresentation.vercel.app](https://speechrecognitionpresentation.vercel.app)
+GitHub is the source and documentation home.  
+Vercel is the polished frontend experience.
 
-## What This Project Is
+## What This Teaches
 
-This is a browser-based workshop presentation for teaching speech recognition to students, young builders, and non-technical audiences.
+This workshop breaks down what happens when someone speaks to Siri, Google Assistant, a voice bot, or a voice-to-text app.
 
-The repository contains the open-source learning material and documentation. The Vercel link is the polished front-end version people can open and use during the workshop.
+Learners explore:
 
-## What Learners Will Understand
-
-By the end of the session, learners should understand:
-
-- what speech recognition means
-- how microphones capture human voice
+- how microphones capture speech
 - how sound becomes digital data
-- what a spectrogram is
-- how AI recognises sound patterns
-- why the system makes mistakes
-- why accents, noise, slang, and local names matter
-- how speech recognition is used in real life
+- how spectrograms show sound patterns
+- how AI recognises speech
+- why accents, speed, slang, and background noise affect accuracy
+- how speech recognition is used in education, healthcare, customer support, accessibility, business, and public services
 - how platforms like ElevenLabs, OpenAI Audio, Deepgram, AssemblyAI, Google Speech-to-Text, and Azure Speech fit into the voice AI pipeline
 
-## Presentation Breakdown
+## Who This Is For
 
-The presentation is structured as a practical 40-minute learning experience.
+This resource is designed for:
 
-| Section | Focus |
+- young people learning practical AI
+- non-technical students
+- educators and workshop facilitators
+- community AI programs
+- beginners curious about voice AI
+- people building AI solutions for social impact
+
+## What Is Inside
+
+The presentation includes:
+
+- a 40-minute workshop flow
+- audience-facing explanations
+- voice-to-text mini demo
+- sample phrase fallback for browsers without microphone access
+- human recognizer activity
+- real-life application examples
+- platform lab for practical tools
+- Word Error Rate calculator
+- responsible AI notes
+- source links and further references
+
+## Workshop Breakdown
+
+| Section | What It Covers |
 | --- | --- |
 | Opening | What speech recognition is and why it matters |
+| Voice-to-text | The basic meaning of speech recognition |
 | Pipeline | Sound waves, digital audio, spectrograms, and pattern matching |
-| Interactive demo | Voice-to-text demo with microphone or backup sample phrases |
-| Human recognizer activity | A group activity showing how noisy evidence changes what people hear |
-| Modern AI | How neural models improved speech recognition |
-| Real-life applications | Assistants, captions, education, healthcare, customer service, accessibility, and business operations |
-| Platform lab | Tools for transcription, voice agents, and text-to-speech |
-| Accuracy | Word Error Rate and why small mistakes can matter |
-| Practical decisions | Cloud vs on-device, privacy, cost, custom words, and local context |
+| Interactive demo | Live microphone transcription and sample phrase fallback |
+| Human recognizer challenge | Why noisy speech creates different interpretations |
+| Modern AI | How neural networks improved speech recognition |
+| Real-life applications | Education, healthcare, accessibility, support, public services, and business |
+| Platform lab | ElevenLabs, OpenAI Audio, Deepgram, AssemblyAI, Google Speech-to-Text, and Azure Speech |
+| Accuracy | Word Error Rate and why mistakes matter |
+| Practical decisions | Cloud vs on-device, privacy, consent, cost, accents, and local vocabulary |
 
-## Hands-On Activities Included
+## Hands-On Activities
 
-The deck includes practical activities that can be done live:
+### 1. Voice-to-Text Mini Demo
 
-- **Voice-to-text mini demo**: speak into the browser and watch the transcript appear.
-- **Sample phrase fallback**: works even when microphone access is blocked.
-- **Human recognizer challenge**: compare what humans hear when speech is clear, fast, quiet, or noisy.
-- **Word Error Rate calculator**: type a correct sentence and a bad transcript to see the error rate.
-- **Platform lab**: compare where ElevenLabs, OpenAI, Deepgram, AssemblyAI, Google, and Azure fit in the voice AI stack.
+Learners speak into the browser and watch speech become text.
 
-## Real-Life Applications Covered
+Example sentence:
 
-The workshop connects speech recognition to real-world use cases:
+```text
+ModSapp can reply to customers at eleven pm.
+```
+
+### 2. Human Recognizer Challenge
+
+Learners compare what people hear when a sentence is spoken clearly, quickly, quietly, or with background noise.
+
+Example phrases:
+
+```text
+I scream for ice cream.
+recognize speech
+```
+
+### 3. Word Error Rate Calculator
+
+Learners compare a correct sentence with a machine transcript and see how substitutions, deletions, and insertions affect accuracy.
+
+### 4. Platform Lab
+
+Learners see how different tools handle different parts of voice AI:
+
+| Platform | Demonstrates |
+| --- | --- |
+| Chrome Web Speech | quick browser transcription |
+| Deepgram | live transcription |
+| AssemblyAI | transcription and audio analysis |
+| Google Speech-to-Text | custom vocabulary and multilingual speech |
+| Azure Speech | enterprise speech services |
+| OpenAI Audio / Realtime | speech-to-text, reasoning, and spoken response |
+| ElevenLabs | realistic text-to-speech and voice agents |
+
+## Real-Life Applications
+
+Speech recognition appears in:
 
 - voice assistants
 - live captions
-- call centers and customer service
-- classroom transcription and summaries
+- online classes
+- lecture transcription
+- call centers
+- customer service bots
 - healthcare note-taking
 - accessibility tools
-- translation
+- translation systems
 - voice search
-- smart cars and smart devices
-- business order capture
+- smart cars
 - public service access
+- business order capture
 
 ## Project Structure
 
 ```text
 speechrecognitionpresentation/
-├── index.html              # Interactive presentation frontend
-├── README.md               # Project overview and learning breakdown
-├── docs/
-│   └── workshop-guide.md   # Detailed facilitator-friendly workshop guide
-├── package.json            # Project metadata
-├── vercel.json             # Static Vercel configuration
-├── LICENSE                 # MIT license
-└── .gitignore
+|-- index.html              # Interactive presentation frontend
+|-- README.md               # Project overview and learning breakdown
+|-- docs/
+|   `-- workshop-guide.md   # Detailed workshop guide
+|-- package.json            # Project metadata
+|-- vercel.json             # Static Vercel configuration
+|-- LICENSE                 # MIT license
+`-- .gitignore
 ```
 
-## Open Locally
+## Local Use
 
-Open `index.html` in any modern browser.
+Open `index.html` in a modern browser.
 
-For the best experience, use Chrome because the built-in microphone demo depends on browser speech recognition support.
+Chrome is recommended for the built-in microphone demo because browser speech recognition support varies.
 
-## Deploy
+## Deployment
 
-This project is a static site. It can be deployed on:
+This is a static HTML project. It can be deployed on:
 
 - Vercel
 - GitHub Pages
@@ -104,21 +157,32 @@ This project is a static site. It can be deployed on:
 - Cloudflare Pages
 - any static web host
 
-Current production deployment:
+Current live deployment:
 
 [https://speechrecognitionpresentation.vercel.app](https://speechrecognitionpresentation.vercel.app)
 
-## Notes on Responsible Use
+## Responsible AI Notes
 
-Speech recognition can be powerful, but it should be used carefully.
+Speech recognition is useful, but it should be used carefully.
 
-Important considerations:
+Important principles:
 
-- Always get consent before recording or transcribing people.
-- Do not clone or synthesize someone else's voice without permission.
-- Check accuracy before using transcripts in medical, legal, financial, or high-stakes settings.
-- Test with diverse accents, environments, and local vocabulary.
+- Get consent before recording or transcribing people.
+- Do not clone or synthesize someone's voice without permission.
+- Check transcripts before using them in medical, legal, financial, or high-stakes settings.
+- Test with different accents, noisy environments, and local vocabulary.
 - Give users a way to correct mistakes.
+- Treat transcripts as helpful outputs, not automatic truth.
+
+## Repository
+
+GitHub:
+
+[https://github.com/aiwithenoch/speechrecognitionpresentation](https://github.com/aiwithenoch/speechrecognitionpresentation)
+
+Live frontend:
+
+[https://speechrecognitionpresentation.vercel.app](https://speechrecognitionpresentation.vercel.app)
 
 ## License
 
